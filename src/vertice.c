@@ -1,0 +1,78 @@
+//
+// Created by natha on 25/05/2026.
+//
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "../include/vertice.h"
+
+typedef struct {
+    char* id;
+    double x;
+    double y;
+    Lista arestas;
+}vertice;
+
+Vertice criarVertice(char* id, double x, double y) {
+    vertice* v = (vertice*) malloc(sizeof(vertice));
+
+    if (v == NULL) {
+        printf("Erro ao alocar memória ao criarVertice!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+
+    v->id = malloc(strlen(id)+1);
+    if (v->id == NULL) {
+        printf("Erro ao alocar memória ao definir ID do vértice!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+    strcpy(v->id, id);
+
+    v->x = x;
+    v->y = y;
+    v->arestas = iniciarLista();
+
+    return v;
+}
+
+char* getIDVertice(Vertice v) {
+    return ((vertice*) v)->id;
+}
+
+double getXVertice(Vertice v) {
+    return ((vertice*) v)->x;
+}
+
+double getYVertice(Vertice v) {
+    return ((vertice*) v)->y;
+}
+
+void setXVertice(Vertice v, double x) {
+    ((vertice*) v)->x = x;
+}
+
+void setYVertice(Vertice v, double y) {
+    ((vertice*) v)->y = y;
+}
+
+void setArestaVertice(Vertice v, Aresta a) {
+    vertice* v1 = (vertice*) v;
+    inserirListaFim(v1->arestas, a);
+}
+
+Lista getArestasVertice(Vertice v) {
+    return ((vertice*) v)->arestas;
+}
+
+void liberarVertice(Vertice v) {
+    if (v == NULL) {
+        return;
+    }
+    vertice* v1 = (vertice*)v;
+    free(v1);
+}
