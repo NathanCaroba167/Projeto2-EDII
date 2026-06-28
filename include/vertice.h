@@ -5,12 +5,15 @@
 #ifndef VERTICE_H
 #define VERTICE_H
 
+#include "../include/lista.h"
+#include "../include/aresta.h"
+
 /*
- Módulo encarregado de coordenar um vértice com operações de criar, get, set e eliminar
+ Módulo encarregado de coordenar um vértice com operações de criar, get, set e liberar
  */
 
 /*
- Ponteiro void Aresta
+ Ponteiro void Vertice
  */
 
 typedef void* Vertice;
@@ -27,7 +30,7 @@ Vertice criarVertice(char* id, double x, double y);
 /// @param v Ponteiro para o vértice analisado
 /// @return String do ID do vértice
 /// @warning
-char* getVerticeId(Vertice v);
+char* getIDVertice(Vertice v);
 
 /// @brief Pega a coordenada x do vértice
 /// @param v Ponteiro para o vértice analisado
@@ -51,6 +54,23 @@ void setXVertice(Vertice v, double x);
 /// @param v Ponteiro para o vértice onde a nova coordenada y será definida
 /// @param y Coordenada y que será definida
 /// @warning
-void setYVertice(Vertice v, double y);
+void setYVertice(Vertice v, double y)
+
+/// @brief Define uma aresta à lista de adjacência do vértice (uma rua que sai do cruzamento).
+/// @param v Ponteiro para o vértice que receberá a aresta.
+/// @param a Ponteiro para a aresta que será definida.
+/// @warning
+void setArestaVertice(Vertice v, Aresta a);
+
+/// @brief Pega a lista de adjacência do vértice (as arestas que saem dele).
+/// @param v Ponteiro para o vértice analisado.
+/// @return Lista de adjacência com as arestas que saem do vértice.
+/// @warning
+Lista getArestasVertice(Vertice v);
+
+/// @brief Libera a memória alocada para o vértice, !!!incluindo as strings.
+/// @param v Ponteiro para o vértice que será liberado.
+/// @warning
+void liberarVertice(Vertice v);
 
 #endif //VERTICE_H
