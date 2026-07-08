@@ -52,14 +52,6 @@ double getYVertice(Vertice v) {
     return ((vertice*) v)->y;
 }
 
-void setXVertice(Vertice v, double x) {
-    ((vertice*) v)->x = x;
-}
-
-void setYVertice(Vertice v, double y) {
-    ((vertice*) v)->y = y;
-}
-
 void setArestaVertice(Vertice v, Aresta a) {
     vertice* v1 = (vertice*) v;
     inserirListaFim(v1->arestas, a);
@@ -74,5 +66,15 @@ void liberarVertice(Vertice v) {
         return;
     }
     vertice* v1 = (vertice*)v;
+
+    Nopont noLista = getPrimeiroNoLista(v1->arestas);
+    while (noLista != NULL) {
+        Aresta a = (Aresta) getItemNoLista(noLista);
+        liberarAresta(a);
+        noLista = getProximoNoLista(noLista);
+    }
+    liberarLista(v1->arestas);
+
+    free(v1->id);
     free(v1);
 }

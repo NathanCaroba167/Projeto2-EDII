@@ -44,18 +44,6 @@ double getXVertice(Vertice v);
 /// @warning
 double getYVertice(Vertice v);
 
-/// @brief Define a nova coordenada x do vértice
-/// @param v Ponteiro para o vértice onde a nova coordenada x será definida
-/// @param x Coordenada x que será definida
-/// @warning
-void setXVertice(Vertice v, double x);
-
-/// @brief Define a nova coordenada y do vértice
-/// @param v Ponteiro para o vértice onde a nova coordenada y será definida
-/// @param y Coordenada y que será definida
-/// @warning
-void setYVertice(Vertice v, double y)
-
 /// @brief Define uma aresta à lista de adjacência do vértice (uma rua que sai do cruzamento).
 /// @param v Ponteiro para o vértice que receberá a aresta.
 /// @param a Ponteiro para a aresta que será definida.
@@ -68,7 +56,7 @@ void setArestaVertice(Vertice v, Aresta a);
 /// @warning
 Lista getArestasVertice(Vertice v);
 
-/// @brief Libera a memória alocada para o vértice, !!!incluindo as strings.
+/// @brief Libera a memória alocada para o vértice, o id, lista de adjacência e todas as arestas contidas nela.
 /// @param v Ponteiro para o vértice que será liberado.
 /// @warning
 void liberarVertice(Vertice v);
