@@ -10,9 +10,8 @@
 #include <float.h>
 #include <math.h>
 
-#include "../include/txt.h"
 #include "../include/qry.h"
-
+#include "../include/aresta.h"
 #include "../include/arvoreGeradoraMinima.h"
 #include "../include/componentes.h"
 #include "../include/dijkstra.h"
@@ -27,7 +26,7 @@ static char* CORES_COMPONENTES[] = {
     "blue", "green", "purple", "orange", "brown", "pink", "cyan", "magenta", "yellow", "teal"
 };
 
-static void comandoArrobaOInterrogacao(Arquivo svg, Arquivo txt, char* reg, char* cep, char face, double num, Registradores estoque) {
+static void comandoArrobaOInterrogacao(Arquivo svg, Arquivo txt, char* reg, char* cep, char face, double num, Registradores estoque, Lista quadras) {
     Quadra q = NULL;
     Nopont noLista = getPrimeiroNoLista(quadras);
     while (noLista != NULL) {
@@ -138,9 +137,9 @@ static void comandoExp(Arquivo svg, Grafo g, double vl){
             Nopont noListaModificada = getPrimeiroNoLista(arestasArvore);
             while (noListaModificada != NULL) {
                 if (getItemNoLista(noListaModificada) == a) {
-                    Vertice destino = buscaVertice(g, getVerticeV2Aresta(a));
+                    Vertice destino = buscaVertice(g, getIDVerticeDestinoAresta(a));
                     if (destino != NULL) {
-                        desenharArestaArvoreGeradoraMinimaSVG(svg, a);
+                        desenharArestaArvoreGeradoraMinimaSVG(svg, x1, y1, getXVertice(destino), getYVertice(destino));
                     }
                     break;
                 }
@@ -153,7 +152,7 @@ static void comandoExp(Arquivo svg, Grafo g, double vl){
     liberarResultadoArvoreGeradoraMinima(ra);
 }
 
-static void comandoPInterrogacao(Arquivo txt, Grafo g, char* reg1, char* reg2, double xOrigem, double yOrigem, double xDestino, double yDestino){
+static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, char* reg2, char* cc, char* cr, double xOrigem, double yOrigem, double xDestino, double yDestino, int idPercurso){
     Vertice vOrigem = NULL;
     Vertice vDestino = NULL;
     double distanciaOrigem = DBL_MAX;
@@ -189,8 +188,35 @@ static void comandoPInterrogacao(Arquivo txt, Grafo g, char* reg1, char* reg2, d
 
     if (vOrigem == NULL || vDestino == NULL) {
         fprintf(txt, "p? %s %s -> grafo vazio\n", reg1, reg2);
-        continue;
     }
+
+    ResultadoDijkstra rdCurto = executarDijkstra(g, getIDVertice(vOrigem), getIDVertice(vDestino), pesoCurtoDijkstra);
+
+    if (!encontrouCaminhoDijkstra(rdCurto)) {
+        fprintf(txt, "p? %s %s cc -> destino inacessivel\n", reg1, reg2);
+    }else {
+        fprintf(txt, "p? %s %s cc -> custo %.2lf m\n", reg1, reg2, getCustoDijkstra(rdCurto));
+
+        desenharPercursoSVG(svg, g, getXVertice(vOrigem), getYVertice(vOrigem), getCaminhoDijkstra(rdCurto), cc, idPercurso++);
+        desenharMarcadorSVG(svg, getXVertice(vOrigem), getYVertice(vOrigem), 'I', cc);
+        desenharMarcadorSVG(svg, getXVertice(vDestino), getYVertice(vDestino), 'F', cc);
+    }
+
+    liberarResultadoDijkstra(rdCurto);
+
+    ResultadoDijkstra rdRapido = executarDijkstra(g, getIDVertice(vOrigem), getIDVertice(vDestino), pesoRapidoDijkstra);
+
+    if (!encontrouCaminhoDijkstra(rdRapido)) {
+        fprintf(txt, "p? %s %s cr -> destino inacessivel\n", reg1, reg2);
+    }else {
+        fprintf(txt, "p? %s %s cr -> custo %.2lf m\n", reg1, reg2, getCustoDijkstra(rdRapido));
+
+        desenharPercursoSVG(svg, g, getXVertice(vOrigem), getYVertice(vOrigem), getCaminhoDijkstra(rdRapido), cr, idPercurso++);
+        desenharMarcadorSVG(svg, getXVertice(vOrigem), getYVertice(vOrigem), 'I', cr);
+        desenharMarcadorSVG(svg, getXVertice(vDestino), getYVertice(vDestino), 'F', cr);
+    }
+
+    liberarResultadoDijkstra(rdRapido);
 }
 
 static Arquivo abrirQry(Nome arquivo) {
@@ -234,7 +260,7 @@ void lerComandosExecutar(Arquivo svg, Arquivo txt, Nome caminho, Grafo g, Lista 
             double num = atof(strtok(NULL," "));
 
 
-            comandoArrobaOInterrogacao(svg, txt, reg, cep, face, num, estoque);
+            comandoArrobaOInterrogacao(svg, txt, reg, cep, face, num, estoque, quadras);
 
         }else if (strcmp(comando, "mvm") == 0) {
             double v = atof(strtok(NULL," "));
@@ -263,13 +289,17 @@ void lerComandosExecutar(Arquivo svg, Arquivo txt, Nome caminho, Grafo g, Lista 
             char* cc = strtok(NULL," ");
             char* cr = strtok(NULL," ");
 
+            if (!registradorOcupado(estoque, reg1) || !registradorOcupado(estoque, reg2)) {
+                fprintf(txt, "p? %s %s -> registrador nao ocupado\n", reg1, reg2);
+                continue;
+            }
 
             double xOrigem = getXRegistrador(estoque, reg1);
             double yOrigem = getYRegistrador(estoque, reg1);
             double xDestino = getXRegistrador(estoque, reg2);
             double yDestino = getYRegistrador(estoque, reg2);
 
-            comandoPInterrogacao(txt, g, reg1, reg2, xOrigem, yOrigem, xDestino, yDestino);
+            comandoPInterrogacao(svg, txt, g, reg1, reg2, cc, cr, xOrigem, yOrigem, xDestino, yDestino, idPercurso);
 
         }else{
             printf("Comando desconhecido: '%s' \n", comando);
