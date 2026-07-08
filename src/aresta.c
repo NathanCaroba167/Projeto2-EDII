@@ -18,6 +18,23 @@ typedef struct {
     char* nomeAresta;
 }aresta;
 
+static char* copiaString(char* origem) {
+    if (origem == NULL) {
+        return NULL;
+    }
+
+    char* copia = (char*) malloc((strlen(origem) + 1));
+    if (copia == NULL) {
+        printf("Erro ao alocar memória para string em aresta!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+
+    strcpy(copia, origem);
+    return copia;
+}
+
 Aresta criarAresta(char* IDDestino, char* ldir, char* lesq, double cmp, double vm, char* nome) {
     aresta* a = malloc(sizeof(aresta));
 
@@ -28,44 +45,16 @@ Aresta criarAresta(char* IDDestino, char* ldir, char* lesq, double cmp, double v
         exit(1);
     }
 
-    a->idDestino = malloc(sizeof(IDDestino)+1);
-    if (a->idDestino == NULL) {
-        printf("Erro ao alocar memória ao definir idDestino!\n");
+    a->idDestino = copiaString(IDDestino);
 
-        perror("Motivo do erro");
-        exit(1);
-    }
-    strcpy(a->idDestino, IDDestino);
+    a->ladoDireito = copiaString(ldir);
 
-    a->ladoDireito = malloc(sizeof(ldir)+1);
-    if (a->ladoDireito == NULL) {
-        printf("Erro ao alocar memória ao definir ladoDireito!\n");
-
-        perror("Motivo do erro");
-        exit(1);
-    }
-    strcpy(a->ladoDireito, ldir);
-
-    a->ladoEsquerdo = malloc(sizeof(lesq)+1);
-    if (a->ladoEsquerdo == NULL) {
-        printf("Erro ao alocar memória ao definir ladoEsquerdo!\n");
-
-        perror("Motivo do erro");
-        exit(1);
-    }
-    strcpy(a->ladoEsquerdo, lesq);
+    a->ladoEsquerdo = copiaString(lesq);
 
     a->comprimento = cmp;
     a->velocidadeMedia = vm;
 
-    a->nomeAresta = malloc(sizeof(nome)+1);
-    if (a->nomeAresta == NULL) {
-        printf("Erro ao alocar memória ao definir nomeAresta!\n");
-
-        perror("Motivo do erro");
-        exit(1);
-    }
-    strcpy(a->nomeAresta, nome);
+    a->nomeAresta = copiaString(nome);
 
     return a;
 
