@@ -24,6 +24,29 @@ static int procurar(int* pai, int i) {
     return pai[i];
 }
 
+static bool unir(int* pai, int* peso, int i, int j) {
+    int ri = procurar(pai, i);
+    int rj = procurar(pai, j);
+
+    if (ri == rj) {
+        return false;
+    }
+
+    if (peso[ri] < peso[rj]) {
+        int temp = ri;
+        ri = rj;
+        rj = temp;
+    }
+
+    pai[rj] = ri;
+
+    if (peso[ri] == peso[rj]) {
+        peso[ri]++;
+    }
+
+    return true;
+}
+
 typedef struct {
     Aresta aresta;
     int origemIndice;
@@ -94,7 +117,7 @@ ResultadoArvoreGeradoraMinima executarArvoreGeradoraMinima(Grafo g, double vl) {
         Aresta a = par->aresta;
         int origemIndice = par->origemIndice;
 
-        char* IDDestino = getVerticeV2Aresta(a);
+        char* IDDestino = getIDVerticeDestinoAresta(a);
         int destinoIndice = -1;
         for (int i = 0; i < nVertices; i++) {
             if (strcmp(getIDVertice(vertices[i]), IDDestino) == 0) {
@@ -103,9 +126,14 @@ ResultadoArvoreGeradoraMinima executarArvoreGeradoraMinima(Grafo g, double vl) {
             }
         }
         if (destinoIndice == -1) {
-            break;
+            continue;
         }
 
+        bool entrou = unir(pai, peso, origemIndice, destinoIndice);
+        if (entrou && getVelocidadeAresta(a) < vl) {
+            setVelocidadeAresta(a, getVelocidadeAresta(a) * 1.5);
+            inserirListaFim(r->arestas, a);
+        }
     }
 
     liberarFilaPrioridade(fP);
