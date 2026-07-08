@@ -13,9 +13,9 @@
 #include "../include/vertice.h"
 #include "../include/dijkstra.h"
 
-
 typedef struct {
     bool encontrou;
+    double custo;
     Lista caminho;
 }resultadoDijkstra;
 
@@ -37,7 +37,15 @@ static int encontraIndicePonteiro(Vertice* vertices, int nVertices, Vertice v) {
     return -1;
 }
 
-ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino) {
+double pesoCurtoDijkstra(Aresta a) {
+    return getComprimentoAresta(a);
+}
+
+double pesoRapidoDijkstra(Aresta a) {
+    return getComprimentoAresta(a) / getVelocidadeAresta(a);
+}
+
+ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, double (*funcaoPesoCusto)(Aresta a)) {
     resultadoDijkstra* r = (resultadoDijkstra*) malloc(sizeof(resultadoDijkstra));
     if (r == NULL) {
         printf("Erro ao alocar memória ao executarDijkstra!\n");
@@ -47,7 +55,7 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino) {
     }
 
     r->encontrou = false;
-
+    r->custo = 0.0;
     r->caminho = iniciarLista();
     int nVertices = getNumVerticesGrafo(g);
     if (nVertices == 0) {
@@ -111,11 +119,11 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino) {
         Nopont noListaArestas = getPrimeiroNoLista(arestas);
         while (noListaArestas != NULL) {
             Aresta a = (Aresta) getItemNoLista(noListaArestas);
-            Vertice viz = buscaVertice(g, getVerticeV2Aresta(a));
-            int vizIndice = encontraIndicePonteiro(vertices, nVertices, viz);
+            Vertice viz = buscaVertice(g, getIDVerticeDestinoAresta(a));
+            int vizIndice = (viz != NULL) ? encontraIndicePonteiro(vertices, nVertices, viz) : -1;
 
             if (vizIndice != -1) {
-                double novaDistancia = distancia[indice];
+                double novaDistancia = distancia[indice] + funcaoPesoCusto(a);
                 if (novaDistancia < distancia[vizIndice]) {
                     distancia[vizIndice] = novaDistancia;
                     predArestas[vizIndice] = a;
@@ -132,6 +140,7 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino) {
 
     if (distancia[destinoIndice] < DBL_MAX) {
         r->encontrou = true;
+        r->custo = distancia[destinoIndice];
 
         int atual = destinoIndice;
         while (predIndice[atual] != -1) {
@@ -151,6 +160,11 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino) {
 bool encontrouCaminhoDijkstra(ResultadoDijkstra resultado) {
     resultadoDijkstra* r = (resultadoDijkstra*) resultado;
     return r->encontrou;
+}
+
+double getCustoDijkstra(ResultadoDijkstra resultado) {
+    resultadoDijkstra* r = (resultadoDijkstra*) resultado;
+    return r->custo;
 }
 
 Lista getCaminhoDijkstra(ResultadoDijkstra resultado) {
