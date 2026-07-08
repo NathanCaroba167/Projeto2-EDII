@@ -16,7 +16,7 @@
 typedef struct {
     double x;
     double y;
-    //bool ocupado;
+    bool ocupado;
 }registrador;
 
 typedef struct{
@@ -36,6 +36,7 @@ Registradores criarRegistradores() {
     for (int i = 0; i < NUMERO_REG; i++) {
         estoque->vetor[i].x = 0.0;
         estoque->vetor[i].y = 0.0;
+        estoque->vetor[i].ocupado = false;
     }
 
     return estoque;
@@ -48,6 +49,7 @@ void setRegistrador(Registradores estoque, char* IDRegistrador, double x, double
 
     est->vetor[indice].x = x;
     est->vetor[indice].y = y;
+    est->vetor[indice].ocupado = true;
 }
 
 double getXRegistrador(Registradores estoque, char* IDRegistrador) {
@@ -62,6 +64,13 @@ double getYRegistrador(Registradores estoque, char* IDRegistrador) {
 
     int indice = atoi(IDRegistrador + 1);
     return est->vetor[indice].y;
+}
+
+bool registradorOcupado(Registradores estoque, char* IDRegistrador) {
+    registradores* est = estoque;
+
+    int indice = atoi(IDRegistrador + 1);
+    return est->vetor[indice].ocupado;
 }
 
 void liberarRegistradores(Registradores estoque) {
