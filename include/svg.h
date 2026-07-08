@@ -5,7 +5,6 @@
 #ifndef SVG_H
 #define SVG_H
 
-#include "aresta.h"
 #include "quadra.h"
 #include "grafo.h"
 #include "lista.h"
@@ -41,9 +40,12 @@ void desenharQuadraSVG(Arquivo svg, Quadra q);
 
 /// @brief Desenha um segmento de rua (aresta) no arquivo SVG.
 /// @param svg Ponteiro para o arquivo que receberá o desenho.
-/// @param a Aresta que será desenhada.
+/// @param x1 Coordenada x do vértice de origem.
+/// @param y1 Coordenada y do vértice de origem.
+/// @param x2 Coordenada x do vértice de destino.
+/// @param y2 Coordenada y do vértice de destino.
 /// @warning
-void desenharArestaSVG(Arquivo svg, Aresta a);
+void desenharArestaSVG(Arquivo svg, double x1, double y1, double x2, double y2);
 
 /// @brief Desenha o bounding box de um componente conexo sendo um retângulo de 50% de transparência.
 /// @param svg Ponteiro para o arquivo que receberá o desenho.
@@ -57,9 +59,12 @@ void desenharBoundingBoxComponenteSVG(Arquivo svg, double xBox, double yBox, dou
 
 /// @brief Desenha um segmento de rua (aresta) que foi selecionada pela árvore geradora minima, no arquivo SVG.
 /// @param svg Ponteiro para o arquivo que receberá o desenho.
-/// @param a Aresta que será desenhada.
+/// @param x1 Coordenada x do vértice de origem.
+/// @param y1 Coordenada y do vértice de origem.
+/// @param x2 Coordenada x do vértice de destino.
+/// @param y2 Coordenada y do vértice de destino.
 /// @warning
-void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, Aresta a);
+void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, double x1, double y1, double x2, double y2);
 
 /// @brief Desenha um percurso animado (animateMotion) ao longo da lista de arestas com a cor indicada.
 /// @param svg Ponteiro para o arquivo que receberá o desenho.
@@ -67,7 +72,7 @@ void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, Aresta a);
 /// @param xOrigem Coordenada x do vértice de origem do percurso.
 /// @param yOrigem Coordenada y do vértice de origem do percurso.
 /// @param caminho Lista de arestas que formam o percurso, em ordem da origem ao destino.
-/// @param corPercurso Cor do percurdo e do marcador animado
+/// @param corPercurso Cor do percurso e do marcador animado
 /// @param idPercurso Identificador único usado como id SVG do path(evita colisão entre dois percursos).
 /// @warning
 void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, Lista caminho, char* corPercurso, int idPercurso);

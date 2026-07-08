@@ -67,8 +67,8 @@ void desenharQuadraSVG(Arquivo svg, Quadra q) {
                  getCEPQuadra(q));
 }
 
-void desenharArestaSVG(Arquivo svg, Aresta a) {
-    if (svg == NULL || a == NULL) return;
+void desenharArestaSVG(Arquivo svg, double x1, double y1, double x2, double y2) {
+    if (svg == NULL) return;
 
     fprintf(svg, "\t<line id=\"%d\" "
                  "x1=\"%lf\" "
@@ -79,10 +79,10 @@ void desenharArestaSVG(Arquivo svg, Aresta a) {
                  "stroke-width=\"1.0\" "
                  "/>\n",
                  idSVG++,
-                 getXVertice(getVerticeV1Aresta(a)),
-                 getYVertice(getVerticeV1Aresta(a)),
-                 getXVertice(getVerticeV2Aresta(a)),
-                 getYVertice(getVerticeV2Aresta(a)));
+                 x1,
+                 y1,
+                 x2,
+                 y2);
 }
 
 void desenharBoundingBoxComponenteSVG(Arquivo svg, double x, double y, double w, double h, char* cor) {
@@ -107,8 +107,8 @@ void desenharBoundingBoxComponenteSVG(Arquivo svg, double x, double y, double w,
                  cor);
 }
 
-void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, Aresta a) {
-    if (svg == NULL || a == NULL) return;
+void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, double x1, double y1, double x2, double y2) {
+    if (svg == NULL) return;
 
     fprintf(svg, "\t<line id=\"%d\" "
                  "x1=\"%lf\" "
@@ -119,10 +119,10 @@ void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, Aresta a) {
                  "stroke-width=\"4.0\" "
                  "/>\n",
                  idSVG++,
-                 getXVertice(getVerticeV1Aresta(a)),
-                 getYVertice(getVerticeV1Aresta(a)),
-                 getXVertice(getVerticeV2Aresta(a)),
-                 getYVertice(getVerticeV2Aresta(a)));
+                 x1,
+                 y1,
+                 x2,
+                 y2);
 }
 
 void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, Lista caminho, char* cor, int idPercurso) {
@@ -134,7 +134,7 @@ void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, L
     Nopont noLista = getPrimeiroNoLista(caminho);
     while (noLista != NULL) {
         Aresta a = (Aresta) getItemNoLista(noLista);
-        Vertice destino = buscaVertice(g, getVerticeV2Aresta(a));
+        Vertice destino = buscaVertice(g, getIDVerticeDestinoAresta(a));
         if (destino != NULL) {
             fprintf(svg, " L %lf,%lf", getXVertice(destino), getYVertice(destino));
         }
