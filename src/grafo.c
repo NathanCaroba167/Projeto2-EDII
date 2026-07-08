@@ -63,11 +63,8 @@ bool inserirArestaGrafo(Grafo g, char* IDOrigem, char* IDDestino, char* ldir, ch
 
 Vertice buscaVertice(Grafo g, char* id) {
     grafo* gf = (grafo*)g;
-    if (gf->vertices == NULL) {
-        return NULL;
-    }
 
-    return buscaVerticePeloID(gf->vertices, id);
+    return buscaVerticePeloID(gf, id);
 }
 
 Lista getVerticesGrafo(Grafo g) {
@@ -85,6 +82,13 @@ int getNumArestasGrafo(Grafo g) {
 
 void liberarGrafo(Grafo g) {
     grafo* gf = (grafo*)g;
+
+    Nopont noLista = getPrimeiroNoLista(gf->vertices);
+    while (noLista != NULL) {
+        Vertice v = (Vertice) getItemNoLista(noLista);
+        liberarVertice(v);
+        noLista = getProximoNoLista(noLista);
+    }
     liberarLista(gf->vertices);
     free(gf);
 }
