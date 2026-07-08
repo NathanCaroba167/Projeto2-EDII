@@ -6,7 +6,7 @@
 #define QUADRA_H
 
 /*
- Módulo encarregado de coordenar uma quadra com operações de criar, get, set e eliminar
+ Módulo encarregado de coordenar uma quadra com operações de criar, get, set e liberar
  */
 
 /*
@@ -14,7 +14,7 @@
  */
 typedef void* Quadra;
 
-/// @brief Cria um quadra com os atributos indicados.
+/// @brief Cria uma quadra com os atributos indicados.
 /// @param cep Identificador único que se refere ao quadra.
 /// @param x Coordenada x do ponto âncora (canto inferior esquerdo) da quadra.
 /// @param y Coordenada y do ponto âncora (canto inferior esquerdo) da quadra.
@@ -123,6 +123,6 @@ void setSWQuadra(Quadra q,double sw);
 /// @brief Libera a memória alocada para a quadra, incluindo as strings de cor.
 /// @param q Ponteiro para o quadra que será eliminado.
 /// @warning
-void eliminarQuadra(Quadra q);
+void liberarQuadra(Quadra q);
 
 #endif //QUADRA_H

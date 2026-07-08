@@ -15,6 +15,10 @@
  Ponteiro void Lista
  */
 typedef void* Lista;
+
+/*
+ Ponteiro void Item
+ */
 typedef void* Item;
 typedef struct Elemento* Nopont;
 
@@ -74,6 +78,7 @@ void concatenaListas(Lista l1, Lista l2);
 /// @brief Pega a quantidade de itens da lista.
 /// @param l Ponteiro para a lista analisada.
 /// @return O tamanho da lista.
+/// @warning
 int getTamanhoLista(Lista l);
 
 /// @brief Verifica se a lista está vazia.

@@ -113,4 +113,9 @@ void setVelocidadeAresta(Aresta a, double vm);
 /// @warning
 void setNomeAresta(Aresta a, char* nome);
 
+/// @brief Libera a memória alocada para a aresta, !!!incluindo as strings.
+/// @param a Ponteiro para a aresta que será liberada.
+/// @warning
+void liberarAresta(Aresta a);
+
 #endif //ARESTA_H
