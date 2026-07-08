@@ -13,6 +13,19 @@ typedef struct {
     int numArestas;
 }grafo;
 
+static Vertice buscaVerticePeloID(grafo* g, char* id) {
+    Nopont noLista = getPrimeiroNoLista(g->vertices);
+    while (noLista != NULL) {
+        Vertice v = (Vertice) getItemNoLista(noLista);
+        if (strcmp(getIDVertice(v), id) == 0) {
+            return v;
+        }
+        noLista = getProximoNoLista(noLista);
+    }
+
+    return NULL;
+}
+
 Grafo criarGrafo() {
     grafo* g = (grafo*)malloc(sizeof(grafo));
     if(g == NULL){
@@ -28,25 +41,23 @@ Grafo criarGrafo() {
 
 void inserirVerticeGrafo(Grafo g, Vertice v) {
     grafo* gf = (grafo*)g;
-    if (gf->vertices == NULL) {
-        gf->vertices = iniciarLista();
-    }
-
     inserirListaFim(gf->vertices, v);
 }
 
-void inserirArestaGrafo(Grafo g, Aresta a) {
+bool inserirArestaGrafo(Grafo g, char* IDOrigem, char* IDDestino, char* ldir, char* lesq, double cmp, double vm, char* nome) {
     grafo* gf = (grafo*)g;
 
-    Vertice origem = getVerticeV1Aresta(a);
-    Vertice destino = getVerticeV2Aresta(a);
+    Vertice origem = buscaVerticePeloID(gf, IDOrigem);
+    Vertice destino = buscaVerticePeloID(gf, IDDestino);
 
     if (origem == NULL || destino == NULL) {
-        return;
+        return false;
     }
 
+    Aresta a = criarAresta(IDDestino, ldir, lesq, cmp, vm, nome);
     setArestaVertice(origem, a);
     gf->numArestas++;
+    return true;
 
 }
 
@@ -56,7 +67,7 @@ Vertice buscaVertice(Grafo g, char* id) {
         return NULL;
     }
 
-    return buscarItemPorId(gf->vertices, id);
+    return buscaVerticePeloID(gf->vertices, id);
 }
 
 Lista getVerticesGrafo(Grafo g) {

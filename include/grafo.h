@@ -5,8 +5,9 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 
-#include "../include/vertice.h"
-#include "../include/aresta.h"
+#include <stdbool.h>
+#include "lista.h"
+#include "vertice.h"
 
 /*
  Módulo encarregado de coordenar um grafo com operações de criar, inserir, buscar, get e liberar
@@ -29,11 +30,18 @@ Grafo criarGrafo();
 /// @warning
 void inserirVerticeGrafo(Grafo g, Vertice v);
 
-/// @brief Insere uma aresta no grafo
+/// @brief Insere uma aresta no grafo.
 /// @param g Ponteiro para o grafo onde a aresta será inserida.
-/// @param a Ponteiro para a aresta que será inserida.
+/// @param IDOrigem Identificador do vértice de origem da aresta.
+/// @param IDDestino Identificador do vértice de destino da aresta.
+/// @param ldir CEP da quadra que está no lado direito da aresta
+/// @param lesq CEP da quadra que está no lado esquerdo da aresta
+/// @param cmp Comprimento da aresta
+/// @param vm Velocidade média da aresta
+/// @param nome Nome da aresta
+/// @return True se a aresta foi inserida, False caso contrário
 /// @warning
-void inserirArestaGrafo(Grafo g, Aresta a);
+bool inserirArestaGrafo(Grafo g, char* IDOrigem, char* IDDestino, char* ldir, char* lesq, double cmp, double vm, char* nome);
 
 /// @brief Busca no grafo o vértice de id correspondente.
 /// @param g Ponteiro para o grafo analisado.

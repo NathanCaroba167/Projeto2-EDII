@@ -59,7 +59,7 @@ Grafo lerVia(Nome caminho) {
             char* ldirFinal = (ldir && strcmp(ldir, "-") != 0) ? ldir : NULL;
             char* lesqFinal = (lesq && strcmp(lesq, "-") != 0) ? lesq : NULL;
 
-            inserirArestaGrafo(g, criarAresta(V1, V2, ldirFinal, lesqFinal, cmp, vm, nome));
+            inserirArestaGrafo(g, V1, V2, ldirFinal, lesqFinal, cmp, vm, nome));
         }else {
             printf("Comando desconhecido: '%s'\n", comando);
         }
