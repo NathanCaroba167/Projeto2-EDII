@@ -134,6 +134,32 @@ void setSWQuadra(Quadra q, double sw) {
     ((quadra*) q)->sw = sw;
 }
 
+void calcularPosicaoEndereco(Quadra q, char face, double num, double* saidaX, double* saidaY) {
+    quadra* quadr = (quadra*)q;
+
+    switch(face) {
+        case 'S':
+            *saidaX = quadr->x + num;
+            *saidaY = quadr->y;
+            break;
+        case 'N':
+            *saidaX = quadr->x + num;
+            *saidaY = quadr->y + quadr->h;
+            break;
+        case 'L':
+            *saidaX = quadr->x;
+            *saidaY = quadr->y + num;
+            break;
+        case 'O':
+            *saidaX = quadr->x + quadr->w;
+            *saidaY = quadr->y + num;
+            break;
+        default:
+            printf("Lado de face incorreto!!\n");
+            exit(1);
+    }
+}
+
 void liberarQuadra(Quadra q) {
     quadra* quadr = (quadra*)q;
     // Libera a struct principal

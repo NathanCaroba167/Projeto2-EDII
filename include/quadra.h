@@ -6,7 +6,7 @@
 #define QUADRA_H
 
 /*
- Módulo encarregado de coordenar uma quadra com operações de criar, get, set e liberar
+ Módulo encarregado de coordenar uma quadra com operações de criar, get, set, calcularPosicaoEndereco e liberar
  */
 
 /*
@@ -119,6 +119,15 @@ double getSWQuadra(Quadra q);
 /// @param sw Nova espessura da borda
 /// @warning
 void setSWQuadra(Quadra q,double sw);
+
+/// @brief Calcula a posição (x, y) na cidade que corresponte o endereço face/num da quadra indicada
+/// @param q Ponteiro para a quadra analisada.
+/// @param face Face da quadra: S (topo), N (base), L (esquerda) ou O (direita)
+/// @param num Distância do imóvel até o ponto de ancoragem sobre a face
+/// @param saidaX Ponteiro onde será armazenada a coordenada x calculada
+/// @param saidaY Ponteiro onde será armazenada a coordenada y calculada
+/// @warning
+void calcularPosicaoEndereco(Quadra q, char face, double num, double* saidaX, double* saidaY);
 
 /// @brief Libera a memória alocada para a quadra, incluindo as strings de cor.
 /// @param q Ponteiro para o quadra que será eliminado.
