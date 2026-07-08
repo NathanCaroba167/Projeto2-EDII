@@ -10,8 +10,7 @@
 #include <stdlib.h>
 
 typedef struct {
-    Vertice v1;
-    Vertice v2;
+    char* idDestino;
     char* ladoDireito;
     char* ladoEsquerdo;
     double comprimento;
@@ -19,7 +18,7 @@ typedef struct {
     char* nomeAresta;
 }aresta;
 
-Aresta criarAresta(Vertice v1, Vertice v2, char* ldir, char* lesq, double cmp, double vm, char* nome) {
+Aresta criarAresta(char* IDDestino, char* ldir, char* lesq, double cmp, double vm, char* nome) {
     aresta* a = malloc(sizeof(aresta));
 
     if (a == NULL) {
@@ -29,8 +28,15 @@ Aresta criarAresta(Vertice v1, Vertice v2, char* ldir, char* lesq, double cmp, d
         exit(1);
     }
 
-    a->v1 = v1;
-    a->v2 = v2;
+    a->idDestino = malloc(sizeof(IDDestino)+1);
+    if (a->idDestino == NULL) {
+        printf("Erro ao alocar memória ao definir idDestino!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+    strcpy(a->idDestino, IDDestino);
+
     a->ladoDireito = malloc(sizeof(ldir)+1);
     if (a->ladoDireito == NULL) {
         printf("Erro ao alocar memória ao definir ladoDireito!\n");
@@ -65,12 +71,8 @@ Aresta criarAresta(Vertice v1, Vertice v2, char* ldir, char* lesq, double cmp, d
 
 }
 
-Vertice getVerticeV1Aresta(Aresta a) {
-    return ((aresta*)a)->v1;
-}
-
-Vertice getVerticeV2Aresta(Aresta a) {
-    return ((aresta*)a)->v2;
+char* getIDVerticeDestinoAresta(Aresta a) {
+    return ((aresta*)a)->idDestino;
 }
 
 char* getQuadraLadoDireitoAresta(Aresta a) {
@@ -93,22 +95,6 @@ char* getNomeAresta(Aresta a) {
     return ((aresta*)a)->nomeAresta;
 }
 
-void setQuadraLadoDireitoAresta(Aresta a, char* ladoDireito) {
-    aresta* auxiliar = (aresta*)a;
-    realloc(auxiliar->ladoEsquerdo, strlen(ladoDireito)+1);
-    strcpy(auxiliar->ladoEsquerdo, ladoDireito);
-}
-
-void setQuadraLadoEsquerdoAresta(Aresta a, char* ladoEsquerdo) {
-    aresta* auxiliar = (aresta*)a;
-    realloc(auxiliar->ladoEsquerdo, strlen(ladoEsquerdo)+1);
-    strcpy(auxiliar->ladoEsquerdo, ladoEsquerdo);
-}
-
-void setComprimentoAresta(Aresta a, double comprimento) {
-    ((aresta*) a)->comprimento = comprimento;
-}
-
 void setVelocidadeAresta(Aresta a, double velocidadeMedia) {
     ((aresta*) a)->velocidadeMedia = velocidadeMedia;
 }
@@ -118,9 +104,10 @@ void liberarAresta(Aresta a) {
         return;
     }
     aresta* a1 = ((aresta*)a);
-    free(a1->nomeAresta);
+    free(a1->idDestino);
     free(a1->ladoDireito);
     free(a1->ladoEsquerdo);
+    free(a1->nomeAresta);
     free(a1);
 }
 
