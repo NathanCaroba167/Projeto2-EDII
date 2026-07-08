@@ -61,6 +61,8 @@ Aresta criarAresta(Vertice v1, Vertice v2, char* ldir, char* lesq, double cmp, d
     }
     strcpy(a->nomeAresta, nome);
 
+    return a;
+
 }
 
 Vertice getVerticeV1Aresta(Aresta a) {
@@ -111,5 +113,15 @@ void setVelocidadeAresta(Aresta a, double velocidadeMedia) {
     ((aresta*) a)->velocidadeMedia = velocidadeMedia;
 }
 
+void liberarAresta(Aresta a) {
+    if ( a == NULL) {
+        return;
+    }
+    aresta* a1 = ((aresta*)a);
+    free(a1->nomeAresta);
+    free(a1->ladoDireito);
+    free(a1->ladoEsquerdo);
+    free(a1);
+}
 
 

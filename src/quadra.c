@@ -10,8 +10,8 @@
 
 #include "../include/quadra.h"
 
-#define CEP_MAX 10
-#define COR_MAX 10
+#define CEP_MAX 20
+#define COR_MAX 20
 
 typedef struct {
     char cep[CEP_MAX];
@@ -25,7 +25,7 @@ typedef struct {
 }quadra;
 
 Quadra criarQuadra(char* cep,double x,double y,double w,double h) {
-    quadra* q = calloc(1,sizeof(quadra));
+    quadra* q = malloc(sizeof(quadra));
 
     if(q == NULL) {
         printf("Erro ao alocar memória ao criarQuadra!\n");
@@ -134,7 +134,7 @@ void setSWQuadra(Quadra q, double sw) {
     ((quadra*) q)->sw = sw;
 }
 
-void eliminarQuadra(Quadra q) {
+void liberarQuadra(Quadra q) {
     quadra* quadr = (quadra*)q;
     // Libera a struct principal
     free(quadr);
