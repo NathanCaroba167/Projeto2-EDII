@@ -10,7 +10,6 @@
 #include "../include/arquivos.h"
 #include "../include/quadra.h"
 #include "../include/svg.h"
-#include "../include/txt.h"
 #include "../include/geo.h"
 #include "../include/via.h"
 #include "../include/qry.h"
@@ -29,7 +28,7 @@ static void gerarMapaBase(Arquivo svg, Lista quadras, Grafo g) {
     Lista vertice = getVerticesGrafo(g);
     Nopont noListaVertice = getPrimeiroNoLista(vertice);
     while (noListaVertice != NULL) {
-        Vertice v = (Vertice) getItemNoLista(noLista);
+        Vertice v = (Vertice) getItemNoLista(noListaVertice);
         double x1 = getXVertice(v);
         double y1 = getYVertice(v);
 
@@ -37,9 +36,9 @@ static void gerarMapaBase(Arquivo svg, Lista quadras, Grafo g) {
         Nopont noListaAresta = getPrimeiroNoLista(arestas);
         while (noListaAresta != NULL) {
             Aresta a = (Aresta) getItemNoLista(noListaAresta);
-            Vertice destino = buscaVertice(g, getVerticeV2Aresta(a));
+            Vertice destino = buscaVertice(g, getIDVerticeDestinoAresta(a));
             if (destino != v) {
-                desenharArestaSVG(svg, a);
+                desenharArestaSVG(svg, x1, y1, getXVertice(destino), getYVertice(destino));
             }
             noListaAresta = getProximoNoLista(noListaAresta);
         }
@@ -114,6 +113,7 @@ int main(int argc, char* argv[]) {
     inicializarSVG(svgInicial);
     gerarMapaBase(svgInicial, quadras, g);
     fecharSVG(svgInicial);
+    printf("DEBUB: passou svgInicial\n");
 
     // Construção de caminhos qry (se existir)
     char caminhoCompletoQry[MAX_CAMINHO];
@@ -145,6 +145,8 @@ int main(int argc, char* argv[]) {
         Arquivo svgFinal = abrirSVG(caminhoSaidaSvgFinal);
         inicializarSVG(svgFinal);
         gerarMapaBase(svgFinal, quadras, g);
+        printf("DEBUB: passou svgFinal\n");
+
 
         Arquivo txt = fopen(caminhoSaidaTxt,"w");
         if (txt == NULL) {
@@ -155,6 +157,7 @@ int main(int argc, char* argv[]) {
         }
 
         lerComandosExecutar(svgFinal, txt, caminhoCompletoQry, g, quadras);
+        printf("DEBUB: passou qry\n");
 
         fclose(txt);
         fecharSVG(svgFinal);
