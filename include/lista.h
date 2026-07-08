@@ -42,8 +42,9 @@ void inserirListaFim(Lista l, Item i);
 /// @brief Remove o Item da lista e libera o nó da lista.
 /// @param l Ponteiro para lista que o item será removido.
 /// @param i Ponteiro para o Item que será removido.
+/// @return True se o item foi removido, False caso contrário
 /// @warning
-void removerItemLista(Lista l, Item i);
+bool removerItemLista(Lista l, Item i);
 
 /// @brief Pega o próximo nó (elemento) da lista a partir do nó (elemento) anterior.
 /// @param p Ponteiro para o nó (elemento) anterior.
@@ -57,23 +58,11 @@ Nopont getProximoNoLista(Nopont p);
 /// @warning
 Nopont getPrimeiroNoLista(Lista l);
 
-/// @brief Pega o último nó (elemento) da lista.
-/// @param l Ponteiro para a lista analisada.
-/// @return Ponteiro para o último elemento.
-/// @warning
-Nopont getUltimoNoLista(Lista l);
-
 /// @brief Pega o item de um nó (elemento) da lista.
 /// @param p Ponteiro para o nó (elemento) analisado.
 /// @return Ponteiro para o item do nó (elemento).
 /// @warning
 Item getItemNoLista(Nopont p);
-
-/// @brief Concatena a lista l2 na lista l1.
-/// @param l1 Ponteiro para a lista que receberá a concatenação.
-/// @param l2 Ponteiro para a lista que será concatenada.
-/// @warning
-void concatenaListas(Lista l1, Lista l2);
 
 /// @brief Pega a quantidade de itens da lista.
 /// @param l Ponteiro para a lista analisada.
@@ -87,7 +76,7 @@ int getTamanhoLista(Lista l);
 /// @warning
 bool listaVazia(Lista l);
 
-/// @brief Libera a memória da lista, de todos os seus elementos (nós) e !!de todos os Pacotes nela contidos.
+/// @brief Libera a memória da lista e de todos os seus elementos (nós).
 /// @param l Ponteiro para lista que será liberada.
 /// @warning
 void liberarLista(Lista l);

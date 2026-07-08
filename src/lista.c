@@ -73,11 +73,11 @@ void inserirListaFim(Lista l, Item i) {
     ls->tamanho++;
 }
 
-void removerElementoLista(Lista l, Item i){
+bool removerElementoLista(Lista l, Item i){
     lista* ls = (lista*)l;
     if(ls->inicio == NULL){
         printf("Nao e possivel excluir algo de uma lista vazia\n");
-        return;
+        return false;
     }
     Nopont atual = ls->inicio;
     Nopont anterior = NULL;
@@ -86,7 +86,7 @@ void removerElementoLista(Lista l, Item i){
         atual = atual->prox;
     }
     if(atual == NULL){
-        return;
+        return false;
 
     }
     if(anterior == NULL){
@@ -104,53 +104,9 @@ void removerElementoLista(Lista l, Item i){
     }
     free(atual);
     ls->tamanho--;
+    return true;
 
 }
-
-Item getPorIdLista(Lista l, int id) {
-    lista* ls = (lista*)l;
-    pont atual = ls->inicio;
-    while(atual != NULL){
-        if(getIDForma(atual->form) == id){
-            printf("Elemento %d encontrado!\n",id);
-            return atual->form;
-        }
-        atual = atual->prox;
-    }
-    printf("Elemento %d nao encontrado!\n",id);
-    return NULL;
-}
-
-void removerPorIdLista(Lista l, int id) {
-    lista* ls = (lista*)l;
-    if(ls->inicio == NULL){
-        printf("Nao e possivel excluir algo de uma lista vazia\n");
-        return;
-    }
-    pont atual = ls->inicio;
-    pont anterior = NULL;
-    while(atual != NULL && getIDForma(atual->form) != id){
-        anterior = atual;
-        atual = atual->prox;
-    }
-    if(atual == NULL){
-        return;
-    }
-    if(anterior == NULL){
-        ls->inicio = atual->prox;
-        if(ls->inicio == NULL) {
-            ls->fim = NULL;
-        }
-    }else{
-        anterior->prox = atual->prox;
-        if(atual == ls->fim) {
-            ls->fim = anterior;
-        }
-    }
-    free(atual);
-    ls->tamanho--;
-}
-
 Nopont getPrimeiroNoLista(Lista l) {
     lista* LISTA = (lista*)l;
     return LISTA->inicio;
@@ -160,35 +116,8 @@ Nopont getProximoNoLista(Nopont p) {
     return p->prox;
 }
 
-Nopont getUltimoNoLista(Lista l) {
-    lista* LISTA = (lista*)l;
-    return LISTA->fim;
-}
-
 Item getItemNoLista(Nopont n) {
     return n->form;
-}
-
-void concatenaListas(Lista l1, Lista l2) {
-    lista* a = (lista*)l1;
-    lista* b = (lista*)l2;
-
-    if (b->inicio == NULL) {
-        printf("Lista b vazia, erro de concatenacao!");
-        return;
-    }
-    if (a->inicio == NULL) {
-        a->inicio = b->inicio;
-        a->fim = b->fim;
-    } else {
-        a->fim->prox = b->inicio;
-        a->fim = b->fim;
-    }
-
-    a->tamanho += b->tamanho;
-    b->inicio = NULL;
-    b->fim = NULL;
-    b->tamanho = 0;
 }
 
 int getTamanhoLista(Lista l) {
@@ -205,12 +134,9 @@ void liberarLista(Lista l){
     lista* ls = (lista*)l;
     Nopont atual = ls->inicio;
     while(atual != NULL){
-        Nopont temp = atual;
-        atual = atual->prox;
-        if (temp->form != NULL) {
-            liberarForma(getPacoteElementoLista(temp));
-        }
-        free(temp);
+        Nopont proximo = atual->prox;
+        free(atual);
+        atual = proximo;
     }
     ls->inicio = NULL;
     ls->fim = NULL;
