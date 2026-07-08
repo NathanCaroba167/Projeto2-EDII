@@ -24,6 +24,27 @@ static int procurar(int* pai, int i) {
     return pai[i];
 }
 
+static void unir(int* pai, int* peso, int i, int j) {
+    int ri = procurar(pai, i);
+    int rj = procurar(pai, j);
+
+    if (ri == rj) {
+        return;
+    }
+
+    if (peso[ri] < peso[rj]) {
+        int temp = ri;
+        ri = rj;
+        rj = temp;
+    }
+
+    pai[rj] = ri;
+
+    if (peso[ri] == peso[rj]) {
+        peso[ri]++;
+    }
+}
+
 ResultadoComponentes executarComponentes(Grafo g, double vl) {
     resultadoComponentes* r = (resultadoComponentes*) malloc(sizeof(resultadoComponentes));
     if (r == NULL) {
@@ -67,7 +88,7 @@ ResultadoComponentes executarComponentes(Grafo g, double vl) {
         while (noListaArestas != NULL) {
             Aresta a = (Aresta) getItemNoLista(noListaArestas);
             if (getVelocidadeAresta(a) >= vl) {
-                char* IDDestino = getVerticeV2Aresta(a);
+                char* IDDestino = getIDVerticeDestinoAresta(a);
                 int j = -1;
                 for (int k = 0; k < nVertices; k++) {
                     if (strcmp(getIDVertice(vertices[k]), IDDestino) == 0) {
@@ -75,10 +96,10 @@ ResultadoComponentes executarComponentes(Grafo g, double vl) {
                         break;
                     }
                 }
-
-
+                if (j != -1) {
+                    unir(pai, peso, i, j);
+                }
             }
-
             noListaArestas = getProximoNoLista(noListaArestas);
         }
     }
