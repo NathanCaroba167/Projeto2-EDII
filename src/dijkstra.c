@@ -44,12 +44,11 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
         return r;
     }
 
-    Vertice* vertices = (Vertice*) malloc(nVertices * sizeof(Vertice));
     double* distancia = (double*) malloc(nVertices * sizeof(double));
     Aresta* predArestas = (Aresta*) malloc(nVertices * sizeof(Aresta));
     int* predIndice = (int*) malloc(nVertices * sizeof(int));
 
-    if (!vertices || !distancia || !predArestas || !predIndice) {
+    if (!distancia || !predArestas || !predIndice) {
         printf("Erro ao alocar memória dos vetores ao executarDijkstra!\n");
 
         perror("Motivo do erro");
@@ -58,11 +57,16 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
 
     Lista listaVertices = getVerticesGrafo(g);
     Nopont noLista = getPrimeiroNoLista(listaVertices);
-    for (int i = 0; i < nVertices; i++) {
-        vertices[i] = (Vertice) getItemNoLista(noLista);
-        distancia[i] = DBL_MAX;
-        predArestas[i] = NULL;
-        predIndice[i] = -1;
+    while (noLista != NULL) {
+        Vertice v = (Vertice) getItemNoLista(noLista);
+        int indice = getIndiceVertice(v);
+
+        if (indice >= 0 && indice < nVertices) {
+            distancia[indice] = DBL_MAX;
+            predArestas[indice] = NULL;
+            predIndice[indice] = -1;
+        }
+
         noLista = getProximoNoLista(noLista);
     }
 
@@ -70,7 +74,6 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
     Vertice vDestino = buscaVertice(g, IDDestino);
 
     if (vOrigem == NULL || vDestino == NULL) {
-        free(vertices);
         free(distancia);
         free(predArestas);
         free(predIndice);
@@ -83,7 +86,7 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
     distancia[origemIndice] = 0.0;
 
     FilaPrioridade fP = criarFilaPrioridade();
-    inserirFilaPrioridade(fP, vertices[origemIndice], 0.0);
+    inserirFilaPrioridade(fP, vOrigem, 0.0);
 
     while (!filaPrioridadeVazia(fP)) {
         double menorPrioridade = consultarPrioridadeMinima(fP);
@@ -105,7 +108,7 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
             Vertice viz = buscaVertice(g, getIDVerticeDestinoAresta(a));
             int vizIndice = (viz != NULL) ? getIndiceVertice(viz) : -1;
 
-            if (vizIndice != -1) {
+            if (vizIndice != -1 && vizIndice < nVertices) {
                 double novaDistancia = distancia[indice] + funcaoPesoCusto(a);
                 if (novaDistancia < distancia[vizIndice]) {
                     distancia[vizIndice] = novaDistancia;
@@ -132,7 +135,6 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
         }
     }
 
-    free(vertices);
     free(distancia);
     free(predArestas);
     free(predIndice);
