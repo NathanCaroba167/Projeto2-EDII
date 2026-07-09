@@ -53,7 +53,7 @@ void teste_lerComandosExecutar_deveEcoarComandoNoTxt(void) {
     FILE* txt = fopen(caminhoTxt, "w");
     FILE* svg = fopen(caminhoSvg, "w");
 
-    Grafo g = criarGrafo();
+    Grafo g = criarGrafo(100);
     Lista quadras = iniciarLista();
 
     lerComandosExecutar(svg, txt, caminhoQry, g, quadras);
@@ -84,7 +84,7 @@ void teste_lerComandosExecutar_deveIgnorarLinhasVazias(void) {
 
     FILE* txt = fopen(caminhoTxt, "w");
     FILE* svg = fopen(caminhoSvg, "w");
-    Grafo g = criarGrafo();
+    Grafo g = criarGrafo(0);
     Lista quadras = iniciarLista();
 
     lerComandosExecutar(svg, txt, caminhoQry, g, quadras);

@@ -29,8 +29,8 @@ void teste_getNomeBase_caminhoTotal(void) {
     free(nome);
 }
 
-void teste_getNomeBase_extensaoPm(void) {
-    char* nome = getNomeBase("pessoas.pm");
+void teste_getNomeBase_extensaoVia(void) {
+    char* nome = getNomeBase("pessoas.via");
     TEST_ASSERT_EQUAL_STRING("pessoas",nome);
     free(nome);
 }
@@ -56,7 +56,7 @@ int main() {
     RUN_TEST(teste_getNomeBase_caminhoComExtensao);
     RUN_TEST(teste_getNomeBase_semExtensao);
     RUN_TEST(teste_getNomeBase_caminhoTotal);
-    RUN_TEST(teste_getNomeBase_extensaoPm);
+    RUN_TEST(teste_getNomeBase_extensaoVia);
     RUN_TEST(teste_getNomeBase_extensaoQry);
     RUN_TEST(teste_getNomeBase_retornoNaoNulo);
 

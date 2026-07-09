@@ -46,7 +46,7 @@ void teste_extrairFilaPrioridadeMinima_deveRetornarItemInserido(void) {
     liberarFilaPrioridade(f);
 }
 
-void teste_extraiFilaPrioridadeMinima_deveExtraiSempreMenorPrioridade(void) {
+void teste_extrairFilaPrioridadeMinima_deveExtraiSempreMenorPrioridade(void) {
     FilaPrioridade f = criarFilaPrioridade();
     int itemA = 3, itemB = 1, itemC = 4, itemD = 1, itemE = 5, itemF = 9, itemG = 2, itemH = 6;
 
@@ -70,7 +70,7 @@ void teste_extraiFilaPrioridadeMinima_deveExtraiSempreMenorPrioridade(void) {
     liberarFilaPrioridade(f);
 }
 
-void teste_extraiFilaPrioridadeMinima_deveDiminuirItensDaFila(void) {
+void teste_extrairFilaPrioridadeMinima_deveDiminuirItensDaFila(void) {
     FilaPrioridade f = criarFilaPrioridade();
     int itemA = 4, itemB = 7, itemC = 1;
 
@@ -151,8 +151,8 @@ int main() {
     RUN_TEST(teste_criarFilaPrioridade_deveComecarVazia);
     RUN_TEST(teste_inserirFilaPrioridade_deveAumentarTamanhoCorretamente);
     RUN_TEST(teste_extrairFilaPrioridadeMinima_deveRetornarItemInserido);
-    RUN_TEST(teste_extraiFilaPrioridadeMinima_deveExtraiSempreMenorPrioridade);
-    RUN_TEST(teste_extraiFilaPrioridadeMinima_deveDiminuirItensDaFila);
+    RUN_TEST(teste_extrairFilaPrioridadeMinima_deveExtraiSempreMenorPrioridade);
+    RUN_TEST(teste_extrairFilaPrioridadeMinima_deveDiminuirItensDaFila);
     RUN_TEST(teste_consultarPrioridadeMinima_deveRetornarMenorPrioridadeCorretamente);
     RUN_TEST(teste_inserirFilaPrioridade_deveSuportarCrescimentoDinamicoMuitosElementos);
     RUN_TEST(teste_liberarFilaPrioridade_naoDeveCrasharFilaVazia);

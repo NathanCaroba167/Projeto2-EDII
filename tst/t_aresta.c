@@ -3,50 +3,50 @@
 //
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../unity/unity.h"
 
+#include "../include/vertice.h"
 #include "../include/aresta.h"
 
-void setUp(void){}
+void setUp(void) {}
 void tearDown(void) {}
 
-void teste_criarAresta_deveCriarArestaCorretamenteComAtributosIndicados(void) {
-    Vertice v1 = criarVertice("1", 2,2);
-    Vertice v2 = criarVertice("2", 4,4);
-    Aresta a = criarAresta(v1, v2, "CEP01", "CEP02", 30.6, 80.7, "Getulio Vargas");
+void teste_criaAresta_deveArmazenarTodosAtributosCorretamente(void) {
+    Aresta a = criarAresta("v2", "12345-000", "12345-001", 120.5, 13.8,"Rua das Flores");
+
     TEST_ASSERT_NOT_NULL(a);
-    TEST_ASSERT_EQUAL_PTR(v1, getVerticeV1Aresta(a));
-    TEST_ASSERT_EQUAL_PTR(v2, getVerticeV2Aresta(a));
-    TEST_ASSERT_EQUAL_STRING("CEP01", getQuadraLadoDireitoAresta(a));
-    TEST_ASSERT_EQUAL_STRING("CEP02", getQuadraLadoEsquerdoAresta(a));
-    TEST_ASSERT_EQUAL_DOUBLE(30.6, getComprimentoAresta(a));
-    TEST_ASSERT_EQUAL_DOUBLE(80.7, getVelocidadeAresta(a));
-    TEST_ASSERT_EQUAL_STRING("Getulio Vargas", getNomeAresta(a));
+    TEST_ASSERT_EQUAL_STRING("v2", getIDVerticeDestinoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("Rua das Flores", getNomeAresta(a));
+    TEST_ASSERT_EQUAL_STRING("12345-000", getQuadraLadoDireitoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("12345-001", getQuadraLadoEsquerdoAresta(a));
+    TEST_ASSERT_EQUAL_DOUBLE(120.5, getComprimentoAresta(a));
+    TEST_ASSERT_EQUAL_DOUBLE(13.8, getVelocidadeAresta(a));
 
     liberarAresta(a);
 }
 
-void teste_criarAresta_devePermitirQuadraDireitaNula(void) {
-    Aresta a = criarAresta("v3", "v4", NULL, "CEP301", 80.5, 60.0, "Avenida Paulista");
+void teste_criaAresta_devePermitirLdirNulo(void) {
+    Aresta a = criarAresta("v3", NULL, "98765-000", 80.0, 10.0, "Avenida Central");
 
     TEST_ASSERT_NULL(getQuadraLadoDireitoAresta(a));
-    TEST_ASSERT_EQUAL_STRING("CEP301", getQuadraLadoEsquerdoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("98765-000", getQuadraLadoEsquerdoAresta(a));
 
     liberarAresta(a);
 }
 
-void teste_criarAresta_devePermitirQuadraEsquerdaNula(void) {
-    Aresta a = criarAresta("v3", "v4", "CEP300", NULL, 80.5, 60.0, "Avenida Paulista");
+void teste_criaAresta_devePermitirLesqNulo(void) {
+    Aresta a = criarAresta("v4", "11111-000", NULL, 50.0, 8.0, "Rua Sem Saida");
 
-    TEST_ASSERT_EQUAL_STRING("CEP300", getQuadraLadoDireitoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("11111-000", getQuadraLadoDireitoAresta(a));
     TEST_ASSERT_NULL(getQuadraLadoEsquerdoAresta(a));
 
     liberarAresta(a);
 }
 
-void teste_criarAresta_devePermitirAmbasQuadrasNulas(void) {
-    Aresta a = criarAresta("v3", "v4", NULL, NULL, 80.5, 60.0, "Avenida Paulista");
+void teste_criaAresta_devePermitirAmbosLadosNulos(void) {
+    Aresta a = criarAresta("v5", NULL, NULL, 30.0, 5.0, "Travessa Nova");
 
     TEST_ASSERT_NULL(getQuadraLadoDireitoAresta(a));
     TEST_ASSERT_NULL(getQuadraLadoEsquerdoAresta(a));
@@ -54,10 +54,25 @@ void teste_criarAresta_devePermitirAmbasQuadrasNulas(void) {
     liberarAresta(a);
 }
 
-void teste_setVmAresta_deveAtualizarVelocidadeMediaAresta(void) {
-    Vertice v1 = criarVertice("1", 2,2);
-    Vertice v2 = criarVertice("2", 4,4);
-    Aresta a = criarAresta(v1, v2, "CEP01", "CEP02", 30.6, 80.7, "Getulio Vargas");
+void teste_criaAresta_deveCopiarStringsInternamente(void) {
+    char idDestino[20];
+    strcpy(idDestino, "v6");
+    char nome[40];
+    strcpy(nome, "Rua Original");
+
+    Aresta a = criarAresta(idDestino, NULL, NULL, 10.0, 1.0, nome);
+
+    strcpy(idDestino, "ALTERADO");
+    strcpy(nome, "ALTERADO");
+
+    TEST_ASSERT_EQUAL_STRING("v6", getIDVerticeDestinoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("Rua Original", getNomeAresta(a));
+
+    liberarAresta(a);
+}
+
+void teste_setVelocidadeAresta_deveAtualizarVelocidadeMedia(void) {
+    Aresta a = criarAresta("v7", NULL, NULL, 100.0, 10.0, "Rua Teste");
 
     setVelocidadeAresta(a, 15.5);
 
@@ -66,6 +81,20 @@ void teste_setVmAresta_deveAtualizarVelocidadeMediaAresta(void) {
     liberarAresta(a);
 }
 
+void teste_setVelocidadeAresta_naoDeveAlterarOutrosAtributos(void) {
+    Aresta a = criarAresta("v8", "11111-000", "22222-000", 200.0, 10.0, "Rua Teste 2");
+
+    setVelocidadeAresta(a, 20.0);
+
+    TEST_ASSERT_EQUAL_STRING("v8", getIDVerticeDestinoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("Rua Teste 2", getNomeAresta(a));
+    TEST_ASSERT_EQUAL_STRING("11111-000", getQuadraLadoDireitoAresta(a));
+    TEST_ASSERT_EQUAL_STRING("22222-000", getQuadraLadoEsquerdoAresta(a));
+    TEST_ASSERT_EQUAL_DOUBLE(200.0, getCcomprimentoAresta(a));
+    TEST_ASSERT_EQUAL_DOUBLE(20.0, getVelocidadeAresta(a));
+
+    liberarAresta(a);
+}
 
 int main() {
     UNITY_BEGIN();
@@ -73,15 +102,13 @@ int main() {
     printf("   TESTE UNITARIO: MODULO ARESTA\n");
     printf("==========================================\n");
 
-    RUN_TEST(teste_criarAresta_deveCriarArestaCorretamenteComAtributosIndicados);
-    RUN_TEST(teste_criarAresta_devePermitirQuadraDireitaNula);
-    RUN_TEST(teste_criarAresta_devePermitirQuadraEsquerdaNula);
-    RUN_TEST(teste_criarAresta_devePermitirAmbasQuadrasNulas);
-    RUN_TEST(teste_setVmAresta_deveAtualizarVelocidadeMediaAresta);
-    RUN_TEST(teste_gettesAresta_devePegarValoresCorretamente);
-    RUN_TEST(teste_settersAresta_deveDefinirValoresCorretamente);
-    RUN_TEST(teste_liberarAresta_deveLiberarArestaCorretamente);
-
+    RUN_TEST(teste_criaAresta_devePermitirAmbosLadosNulos);
+    RUN_TEST(teste_criaAresta_deveArmazenarTodosAtributosCorretamente);
+    RUN_TEST(teste_criaAresta_devePermitirLdirNulo);
+    RUN_TEST(teste_criaAresta_devePermitirLesqNulo);
+    RUN_TEST(teste_criaAresta_deveCopiarStringsInternamente);
+    RUN_TEST(teste_setVelocidadeAresta_deveAtualizarVelocidadeMedia);
+    RUN_TEST(teste_setVelocidadeAresta_naoDeveAlterarOutrosAtributos);
 
     printf("\n==========================================\n");
     printf("   SUCESSO: TODOS OS TESTES PASSARAM!\n");

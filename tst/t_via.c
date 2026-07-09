@@ -33,8 +33,8 @@ void teste_lerVia_deveInserirVerticesComSucesso(void) {
     Grafo g = lerVia(caminho);
     TEST_ASSERT_NOT_NULL(g);
 
-    Vertice v1 = getVerticesGrafo(g, "V10");
-    Vertice v2 = getVerticesGrafo(g, "V20");
+    Vertice v1 = buscaVertice(g, "V10");
+    Vertice v2 = buscaVertice(g, "V20");
 
     TEST_ASSERT_NOT_NULL(v1);
     TEST_ASSERT_NOT_NULL(v2);
@@ -53,7 +53,7 @@ void teste_lerVia_deveInserirArestasETratarHifens(void) {
     Grafo g = lerVia(caminho);
     TEST_ASSERT_NOT_NULL(g);
 
-    Vertice v1 = getVerticesGrafo(g, "v1");
+    Vertice v1 = buscaVertice(g, "v1");
     TEST_ASSERT_NOT_NULL(v1);
 
     Lista lArestas = getArestasVertice(v1);
@@ -81,7 +81,7 @@ void teste_lerVia_deveIgnorarLinhasVaziasEComandosDesconhecidos(void) {
     Grafo g = lerVia(caminho);
     TEST_ASSERT_NOT_NULL(g);
 
-    Vertice v3 = getVerticesGrafo(g, "V30");
+    Vertice v3 = buscaVertice(g, "V30");
     TEST_ASSERT_NOT_NULL(v3);
 
     remove(caminho);

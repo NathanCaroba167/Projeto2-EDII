@@ -104,8 +104,8 @@ void teste_desenharArestaSVG_deveDesenharArestaCorretamente(void) {
     Arquivo svg = abrirSVG(caminho);
     inicializarSVG(svg);
 
-    Aresta a = criarAresta("v1", "v2", "CEP106", "CEP103", 10.0, 50.0, "Rua Faria");
-    desenharArestaSVG(svg,a);
+    Aresta a = criarAresta("v2", "CEP106", "CEP103", 10.0, 50.0, "Rua Faria");
+    desenharArestaSVG(svg, 0.0, 0.0, 5.0, 0.0);
 
     fecharSVG(svg);
     liberarAresta(a);
@@ -139,8 +139,8 @@ void teste_desenharArestaArvoreGeradoraMinimaSVG_deveDesenharArestaCorretamente(
     Arquivo svg = abrirSVG(caminho);
     inicializarSVG(svg);
 
-    Aresta a = criarAresta("v1", "v2", "CEP106", "CEP103", 10.0, 50.0, "Rua Faria");
-    desenharArestaArvoreGeradoraMinimaSVG(svg,a);
+    Aresta a = criarAresta("v2", "CEP106", "CEP103", 10.0, 50.0, "Rua Faria");
+    desenharArestaArvoreGeradoraMinimaSVG(svg, 0.0, 0.0, 5.0, 0.0);
 
     fecharSVG(svg);
     liberarAresta(a);
@@ -158,12 +158,12 @@ void teste_desenharPercursoSVG_deveDesenharPercursoCorretamenteSVG(void) {
     Arquivo svg = abrirSVG(caminho);
     inicializarSVG(svg);
 
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 50.0, 50.0));
-    inserirArestaGrafo(g,  criarAresta("v1", "v2", "CEP146", "CEP163", 40.0, 60.0, "Rua Augusta"));
+    Grafo g = criarGrafo(2);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 50.0, 50.0, 1));
+    inserirArestaGrafo(g, "v1", "v2", "CEP146", "CEP163", 40.0, 60.0, "Rua Augusta");
 
-    Vertice v1 = getVerticesGrafo(g, "v1");
+    Vertice v1 = buscaVertice(g, "v1");
     Lista lAresta = getArestasVertice(v1);
     Nopont noLista = getPrimeiroNoLista(lAresta);
     Aresta a = (Aresta) getItemNoLista(noLista);

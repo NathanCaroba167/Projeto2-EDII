@@ -16,7 +16,7 @@ void setUp(void){}
 void tearDown(void) {}
 
 void teste_criarVertice_deveCriarVerticeCorretamenteComAtributosIndicados(void) {
-    Vertice v1 = criarVertice("v1", 2.6,3.7);
+    Vertice v1 = criarVertice("v1", 2.6, 3.7, 0);
 
     TEST_ASSERT_NOT_NULL(v1);
     TEST_ASSERT_EQUAL_STRING("v1", getIDVertice(v1));
@@ -27,8 +27,8 @@ void teste_criarVertice_deveCriarVerticeCorretamenteComAtributosIndicados(void) 
 }
 
 void teste_setArestaVertice_deveGuardarArestaNaListaCorretamente(void) {
-    Vertice v2 = criarVertice("v2", 2.6,3.7);
-    Aresta a = criarAresta("v7", "v3", "CEP303", "CEP304", 75.0, 45.0, "Getulio Vargas");
+    Vertice v2 = criarVertice("v2", 2.6, 3.7, 0);
+    Aresta a = criarAresta("v3", "CEP303", "CEP304", 75.0, 45.0, "Getulio Vargas");
 
     setArestaVertice(v2, a);
 
@@ -37,8 +37,8 @@ void teste_setArestaVertice_deveGuardarArestaNaListaCorretamente(void) {
     TEST_ASSERT_NOT_NULL(n);
 
     Aresta arestaGuardada = (Aresta) getItemNoLista(n);
-    TEST_ASSERT_EQUAL_STRING("v7", getVerticeV1Aresta(arestaGuardada));
-    TEST_ASSERT_EQUAL_STRING("v3", getVerticeV2Aresta(arestaGuardada));
+    TEST_ASSERT_EQUAL_STRING("v7", getIDVerticeDestinoAresta(arestaGuardada));
+    TEST_ASSERT_EQUAL_STRING("v3", getIDVerticeDestinoAresta(arestaGuardada));
     TEST_ASSERT_EQUAL_DOUBLE(75.0, getComprimentoAresta(arestaGuardada));
     TEST_ASSERT_EQUAL_DOUBLE(45.0, getVelocidadeAresta(arestaGuardada));
 
@@ -46,9 +46,9 @@ void teste_setArestaVertice_deveGuardarArestaNaListaCorretamente(void) {
 }
 
 void teste_liberarVertice_naoDeveCrashar(void) {
-    Vertice v = criarVertice("v9", 6.7, 6.7);
-    setArestaVertice(v, criarAresta("v7", "v3", "CEP303", "CEP304", 75.0, 45.0, "Getulio Vargas"));
-    setArestaVertice(v, criarAresta("v3", "v7", "CEP304", "CEP303", 55.0, 80.0, "Alfredo Gois"));
+    Vertice v = criarVertice("v9", 6.7, 6.7, 0);
+    setArestaVertice(v, criarAresta("v3", "CEP303", "CEP304", 75.0, 45.0, "Getulio Vargas"));
+    setArestaVertice(v, criarAresta("v7", "CEP304", "CEP303", 55.0, 80.0, "Alfredo Gois"));
 
     liberarVertice(v);
     TEST_PASS();

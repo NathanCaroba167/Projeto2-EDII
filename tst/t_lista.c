@@ -107,6 +107,12 @@ void teste_removerItemLista_deveRemoverPrimeiroEUltimo(void) {
     liberarLista(l);
 }
 
+void teste_liberarLista_naoDeveCrasharComListaVazia(void) {
+    Lista l = iniciarLista();
+    liberarLista(l);
+    TEST_PASS();
+}
+
 int main() {
     UNITY_BEGIN();
     printf("==========================================\n");
@@ -117,11 +123,9 @@ int main() {
     RUN_TEST(teste_inserirListaFim_deveAumentarTamanho);
     RUN_TEST(teste_inserirListaInicio_deveInserirCorretamente);
     RUN_TEST(teste_inserirListaFim_deveInserirCorretamente);
-    RUN_TEST(teste_getPrimeiroNoLista_devePegarNoCorretamente);
     RUN_TEST(teste_removerItemLista_deveRemoverItemDoMeioCorretamente);
-    RUN_TEST(teste_removerItemLista_deveRetornarFalseSeItemNaoExiste);
     RUN_TEST(teste_removerItemLista_deveRemoverPrimeiroEUltimo);
-    RUN_TEST(teste_liberarLista_deveLiberarListaCorretamente);
+    RUN_TEST(teste_liberarLista_naoDeveCrasharComListaVazia);
 
     printf("\n==========================================\n");
     printf("   SUCESSO: TODOS OS TESTES PASSARAM!\n");

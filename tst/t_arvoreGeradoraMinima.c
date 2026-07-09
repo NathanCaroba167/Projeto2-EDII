@@ -12,7 +12,7 @@ void setUp(void){}
 void tearDown(void) {}
 
 void teste_executarArvoreGeradoraMinima_grafoVazio_deveRetonarZeroArestas(void){
-    Grafo g = criarGrafo();
+    Grafo g = criarGrafo(0);
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 5.0);
 
@@ -23,11 +23,11 @@ void teste_executarArvoreGeradoraMinima_grafoVazio_deveRetonarZeroArestas(void){
 }
 
 void teste_executarArvoreGeradoraMinima_verticeIsolado_naoDeveCrashar(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 0.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP469", "CEP118", 50.0, 40.0, "Rua Socrates"));
+    Grafo g = criarGrafo(3);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0, 1));
+    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 0.0, 2));
+    inserirArestaGrafo(g, "v1", "v2", "CEP469", "CEP118", 50.0, 40.0, "Rua Socrates");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 50.0);
 
@@ -38,16 +38,16 @@ void teste_executarArvoreGeradoraMinima_verticeIsolado_naoDeveCrashar(void) {
 }
 
 void teste_executarArvoreGeradoraMinima_umaAresta_vmMenorQueVl_deveModificarVM(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP169", "CEP104", 50.0, 50.0, "Rua Aristoteles"));
+    Grafo g = criarGrafo(2);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0, 1));
+    inserirArestaGrafo(g, "v1", "v2", "CEP169", "CEP104", 50.0, 50.0, "Rua Aristoteles");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 60.0);
 
     TEST_ASSERT_EQUAL_INT(1, getNumArestasArvoreGeradoraMinima(r));
 
-    Vertice v1 = getVerticesGrafo(g, "v1");
+    Vertice v1 = buscaVertice(g, "v1");
     Lista lAresta = getArestasVertice(v1);
     Nopont noLista = getPrimeiroNoLista(lAresta);
     Aresta a = (Aresta) getItemNoLista(noLista);
@@ -59,16 +59,16 @@ void teste_executarArvoreGeradoraMinima_umaAresta_vmMenorQueVl_deveModificarVM(v
 }
 
 void teste_executarArvoreGeradoraMinima_umaAresta_vmMaiorOuIgualQueVl_naoDeveModificarVM(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP139", "CEP194", 50.0, 50.0, "Rua Kant"));
+    Grafo g = criarGrafo(2);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0, 1));
+    inserirArestaGrafo(g, "v1", "v2", "CEP139", "CEP194", 50.0, 50.0, "Rua Kant");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 40.0);
 
     TEST_ASSERT_EQUAL_INT(0, getNumArestasArvoreGeradoraMinima(r));
 
-    Vertice v1 = getVerticesGrafo(g, "v1");
+    Vertice v1 = buscaVertice(g, "v1");
     Lista lAresta = getArestasVertice(v1);
     Nopont noLista = getPrimeiroNoLista(lAresta);
     Aresta a = (Aresta) getItemNoLista(noLista);
@@ -80,13 +80,13 @@ void teste_executarArvoreGeradoraMinima_umaAresta_vmMaiorOuIgualQueVl_naoDeveMod
 }
 
 void teste_executarArvoreGeradoraMinima_caminhoTriangulo_deveEscolherMenorCmp(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 5.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP139", "CEP194", 10.0, 30.0, "Rua Kant"));
-    inserirArestaGrafo(g, criarAresta("v2", "v3", "CEP149", "CEP194", 20.0, 30.0, "Rua Descartes"));
-    inserirArestaGrafo(g, criarAresta("v1", "v3", "CEP194", "CEP129", 100.0, 30.0, "Rua Nietzsche"));
+    Grafo g = criarGrafo(3);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0, 1));
+    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 5.0, 2));
+    inserirArestaGrafo(g, "v1", "v2", "CEP139", "CEP194", 10.0, 30.0, "Rua Kant");
+    inserirArestaGrafo(g, "v2", "v3", "CEP149", "CEP194", 20.0, 30.0, "Rua Descartes");
+    inserirArestaGrafo(g, "v1", "v3", "CEP194", "CEP129", 100.0, 30.0, "Rua Nietzsche");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 40.0);
 
@@ -97,17 +97,17 @@ void teste_executarArvoreGeradoraMinima_caminhoTriangulo_deveEscolherMenorCmp(vo
 }
 
 void teste_executarArvoreGeradoraMinima_caminhoTriangulo_naoDeveModificarArestaForaArvore(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0));
-    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 5.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP139", "CEP194", 10.0, 30.0, "Rua Locke"));
-    inserirArestaGrafo(g, criarAresta("v2", "v3", "CEP149", "CEP194", 20.0, 30.0, "Rua Heraclito"));
-    inserirArestaGrafo(g, criarAresta("v1", "v3", "CEP194", "CEP129", 100.0, 30.0, "Rua Gorgias"));
+    Grafo g = criarGrafo(3);
+    inserirVerticeGrafo(g, criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g, criarVertice("v2", 5.0, 0.0, 1));
+    inserirVerticeGrafo(g, criarVertice("v3", 10.0, 5.0, 2));
+    inserirArestaGrafo(g, "v1", "v2", "CEP139", "CEP194", 10.0, 30.0, "Rua Locke");
+    inserirArestaGrafo(g, "v2", "v3", "CEP149", "CEP194", 20.0, 30.0, "Rua Heraclito");
+    inserirArestaGrafo(g, "v1", "v3", "CEP194", "CEP129", 100.0, 30.0, "Rua Gorgias");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 40.0);
 
-    Vertice v1 = getVerticesGrafo(g, "v1");
+    Vertice v1 = buscaVertice(g, "v1");
     Lista lAresta = getArestasVertice(v1);
     Nopont noLista = getPrimeiroNoLista(lAresta);
     while (noLista != NULL) {
@@ -123,10 +123,10 @@ void teste_executarArvoreGeradoraMinima_caminhoTriangulo_naoDeveModificarArestaF
 }
 
 void teste_liberarResultadoArvoreGeradoraMinima_naoDeveCrashar(void) {
-    Grafo g = criarGrafo();
-    inserirVerticeGrafo(g,criarVertice("v1", 0.0, 0.0));
-    inserirVerticeGrafo(g,criarVertice("v2", 5.0, 0.0));
-    inserirArestaGrafo(g, criarAresta("v1", "v2", "CEP360", "CEP361", 10.0, 3.0, "Rua Platao"));
+    Grafo g = criarGrafo(2);
+    inserirVerticeGrafo(g,criarVertice("v1", 0.0, 0.0, 0));
+    inserirVerticeGrafo(g,criarVertice("v2", 5.0, 0.0, 1));
+    inserirArestaGrafo(g, "v1", "v2", "CEP360", "CEP361", 10.0, 3.0, "Rua Platao");
 
     ResultadoArvoreGeradoraMinima r = executarArvoreGeradoraMinima(g, 10.0);
     liberarResultadoArvoreGeradoraMinima(r);
