@@ -134,7 +134,7 @@ void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, double x1, double y1, do
                  y2);
 }
 
-void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, Lista caminho, char* cor, int idPercurso) {
+void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, double xDestino, double yDestino, Lista caminho, char* cor, int idPercurso) {
     if (svg == NULL || g == NULL || caminho == NULL || cor == NULL) return;
     if (listaVazia(caminho)) return;
 
@@ -145,12 +145,14 @@ void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, L
         Aresta a = (Aresta) getItemNoLista(noLista);
         Vertice destino = buscaVertice(g, getIDVerticeDestinoAresta(a));
         if (destino != NULL) {
-            fprintf(svg, " L %lf,%lf", getXVertice(destino), getYVertice(destino));
+            fprintf(svg, " L %lf %lf ", getXVertice(destino), getYVertice(destino));
         }
         noLista = getProximoNoLista(noLista);
     }
 
-    fprintf(svg, "\" stroke=\"%s\" fill=\"none\" stroke-width=\"2\"/>\n", cor);
+    fprintf(svg, "L %lf %lf\" ", xDestino, yDestino);
+
+    fprintf(svg, "stroke=\"%s\" fill=\"none\" stroke-width=\"2\"/>\n", cor);
 
     fprintf(svg, "\t<circle r=\"5\" "
                  "fill=\"%s\">\n "

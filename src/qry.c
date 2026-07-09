@@ -198,7 +198,7 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
     }else {
         fprintf(txt, "p? %s %s cc -> custo %.2lf m\n", reg1, reg2, getCustoDijkstra(rdCurto));
 
-        desenharPercursoSVG(svg, g, xOrigem, yOrigem, getCaminhoDijkstra(rdCurto), cc, idPercurso++);
+        desenharPercursoSVG(svg, g, xOrigem, yOrigem, xDestino, yDestino, getCaminhoDijkstra(rdCurto), cc, idPercurso++);
         desenharMarcadorSVG(svg,xOrigem, yOrigem, 'I', cc);
         desenharMarcadorSVG(svg, xDestino, yDestino, 'F', cc);
     }
@@ -212,7 +212,7 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
     }else {
         fprintf(txt, "p? %s %s cr -> custo %.2lf s\n", reg1, reg2, getCustoDijkstra(rdRapido));
 
-        desenharPercursoSVG(svg, g, xOrigem, yOrigem, getCaminhoDijkstra(rdRapido), cr, idPercurso++);
+        desenharPercursoSVG(svg, g, xOrigem, yOrigem, xDestino, yDestino, getCaminhoDijkstra(rdRapido), cr, idPercurso++);
         desenharMarcadorSVG(svg, xOrigem, yOrigem, 'I', cr);
         desenharMarcadorSVG(svg, xDestino, yDestino, 'F', cr);
     }

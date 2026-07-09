@@ -71,11 +71,13 @@ void desenharArestaArvoreGeradoraMinimaSVG(Arquivo svg, double x1, double y1, do
 /// @param g Grafo usado para buscar as coordenadas dos vértices de destino de cada aresta.
 /// @param xOrigem Coordenada x do vértice de origem do percurso.
 /// @param yOrigem Coordenada y do vértice de origem do percurso.
+/// @param xDestino Coordenada x do vértice de destino do percurso.
+/// @param yDestino Coordenada y do vértice de destino do percurso.
 /// @param caminho Lista de arestas que formam o percurso, em ordem da origem ao destino.
 /// @param corPercurso Cor do percurso e do marcador animado
 /// @param idPercurso Identificador único usado como id SVG do path(evita colisão entre dois percursos).
 /// @warning
-void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, Lista caminho, char* corPercurso, int idPercurso);
+void desenharPercursoSVG(Arquivo svg, Grafo g, double xOrigem, double yOrigem, double xDestino, double yDestino, Lista caminho, char* corPercurso, int idPercurso);
 
 /// @brief Desenha uma placa (retângulo + letra) marcando o início ou fim do percurso
 /// @param svg Ponteiro para o arquivo que receberá o desenho.
