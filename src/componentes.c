@@ -89,13 +89,9 @@ ResultadoComponentes executarComponentes(Grafo g, double vl) {
             Aresta a = (Aresta) getItemNoLista(noListaArestas);
             if (getVelocidadeAresta(a) >= vl) {
                 char* IDDestino = getIDVerticeDestinoAresta(a);
-                int j = -1;
-                for (int k = 0; k < nVertices; k++) {
-                    if (strcmp(getIDVertice(vertices[k]), IDDestino) == 0) {
-                        j = k;
-                        break;
-                    }
-                }
+                Vertice vDestino = buscaVertice(g, IDDestino);
+
+                int j = (vDestino != NULL) ? getIndiceVertice(vDestino) : -1;
                 if (j != -1) {
                     unir(pai, peso, i, j);
                 }

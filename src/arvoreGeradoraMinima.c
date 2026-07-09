@@ -118,13 +118,11 @@ ResultadoArvoreGeradoraMinima executarArvoreGeradoraMinima(Grafo g, double vl) {
         int origemIndice = par->origemIndice;
 
         char* IDDestino = getIDVerticeDestinoAresta(a);
-        int destinoIndice = -1;
-        for (int i = 0; i < nVertices; i++) {
-            if (strcmp(getIDVertice(vertices[i]), IDDestino) == 0) {
-                destinoIndice = i;
-                break;
-            }
-        }
+
+        Vertice vDestino = buscaVertice(g, IDDestino);
+
+        int destinoIndice = (vDestino != NULL) ? getIndiceVertice(vDestino) : -1;
+
         if (destinoIndice == -1) {
             continue;
         }

@@ -19,24 +19,6 @@ typedef struct {
     Lista caminho;
 }resultadoDijkstra;
 
-static int encontraIndice(Vertice* vertices, int nVertices, char* id) {
-    for (int i = 0; i < nVertices; i++) {
-        if (strcmp(getIDVertice(vertices[i]), id) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-static int encontraIndicePonteiro(Vertice* vertices, int nVertices, Vertice v) {
-    for (int i = 0; i < nVertices; i++) {
-        if (vertices[i] == v) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 double pesoCurtoDijkstra(Aresta a) {
     return getComprimentoAresta(a);
 }
@@ -84,16 +66,19 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
         noLista = getProximoNoLista(noLista);
     }
 
-    int origemIndice = encontraIndice(vertices, nVertices, IDOrigem);
-    int destinoIndice = encontraIndice(vertices, nVertices, IDDestino);
+    Vertice vOrigem = buscaVertice(g, IDOrigem);
+    Vertice vDestino = buscaVertice(g, IDDestino);
 
-    if (origemIndice == -1 || destinoIndice == -1) {
+    if (vOrigem == NULL || vDestino == NULL) {
         free(vertices);
         free(distancia);
         free(predArestas);
         free(predIndice);
         return r;
     }
+
+    int origemIndice = getIndiceVertice(vOrigem);
+    int destinoIndice = getIndiceVertice(vDestino);
 
     distancia[origemIndice] = 0.0;
 
@@ -104,10 +89,8 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
         double menorPrioridade = consultarPrioridadeMinima(fP);
         Vertice v = (Vertice) extrairFilaPrioridadeMinima(fP);
 
-        int indice = encontraIndicePonteiro(vertices, nVertices, v);
-        if (indice == -1) {
-            continue;
-        }
+        int indice = getIndiceVertice(v);
+
         if (menorPrioridade > distancia[indice]) {
             continue;
         }
@@ -120,7 +103,7 @@ ResultadoDijkstra executarDijkstra(Grafo g, char* IDOrigem, char* IDDestino, dou
         while (noListaArestas != NULL) {
             Aresta a = (Aresta) getItemNoLista(noListaArestas);
             Vertice viz = buscaVertice(g, getIDVerticeDestinoAresta(a));
-            int vizIndice = (viz != NULL) ? encontraIndicePonteiro(vertices, nVertices, viz) : -1;
+            int vizIndice = (viz != NULL) ? getIndiceVertice(viz) : -1;
 
             if (vizIndice != -1) {
                 double novaDistancia = distancia[indice] + funcaoPesoCusto(a);
