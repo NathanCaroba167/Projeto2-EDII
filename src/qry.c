@@ -188,6 +188,7 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
 
     if (vOrigem == NULL || vDestino == NULL) {
         fprintf(txt, "p? %s %s -> grafo vazio\n", reg1, reg2);
+        return;
     }
 
     ResultadoDijkstra rdCurto = executarDijkstra(g, getIDVertice(vOrigem), getIDVertice(vDestino), pesoCurtoDijkstra);
