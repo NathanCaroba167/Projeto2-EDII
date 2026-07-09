@@ -210,7 +210,7 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
     if (!encontrouCaminhoDijkstra(rdRapido)) {
         fprintf(txt, "p? %s %s cr -> destino inacessivel\n", reg1, reg2);
     }else {
-        fprintf(txt, "p? %s %s cr -> custo %.2lf m\n", reg1, reg2, getCustoDijkstra(rdRapido));
+        fprintf(txt, "p? %s %s cr -> custo %.2lf s\n", reg1, reg2, getCustoDijkstra(rdRapido));
 
         desenharPercursoSVG(svg, g, getXVertice(vOrigem), getYVertice(vOrigem), getCaminhoDijkstra(rdRapido), cr, idPercurso++);
         desenharMarcadorSVG(svg, getXVertice(vOrigem), getYVertice(vOrigem), 'I', cr);
