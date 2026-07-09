@@ -12,9 +12,10 @@ typedef struct {
     double x;
     double y;
     Lista arestas;
+    int indice;
 }vertice;
 
-Vertice criarVertice(char* id, double x, double y) {
+Vertice criarVertice(char* id, double x, double y, int indice) {
     vertice* v = (vertice*) malloc(sizeof(vertice));
 
     if (v == NULL) {
@@ -35,6 +36,7 @@ Vertice criarVertice(char* id, double x, double y) {
 
     v->x = x;
     v->y = y;
+    v->indice = indice;
     v->arestas = iniciarLista();
 
     return v;
@@ -50,6 +52,10 @@ double getXVertice(Vertice v) {
 
 double getYVertice(Vertice v) {
     return ((vertice*) v)->y;
+}
+
+int getIndiceVertice(Vertice v) {
+    return ((vertice*) v)->indice;
 }
 
 void setArestaVertice(Vertice v, Aresta a) {

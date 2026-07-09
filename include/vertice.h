@@ -22,9 +22,10 @@ typedef void* Vertice;
 /// @param id Identificador universal do vértice
 /// @param x Coordenada x do vértice
 /// @param y Coordenada y do vértice
+/// @param indice Índice do vértice.
 /// @return Ponteiro para o vértice criado
 /// @warning
-Vertice criarVertice(char* id, double x, double y);
+Vertice criarVertice(char* id, double x, double y, int indice);
 
 /// @brief Pega o ID do vértice
 /// @param v Ponteiro para o vértice analisado
@@ -43,6 +44,12 @@ double getXVertice(Vertice v);
 /// @return A coordenada y do vértice
 /// @warning
 double getYVertice(Vertice v);
+
+/// @brief Pega o indice do vertice
+/// @param v Ponteiro para o vértice analisado
+/// @return Indice do vertice.
+/// @warnig
+int getIndiceVertice(Vertice v);
 
 /// @brief Define uma aresta à lista de adjacência do vértice (uma rua que sai do cruzamento).
 /// @param v Ponteiro para o vértice que receberá a aresta.
