@@ -66,6 +66,8 @@ Lista lerGeo(Nome caminho) {
             sw = novaSW;
             if (novaCorP) {
                 strncpy(corP, novaCorP, 31);
+            }
+            if (novaCorB) {
                 strncpy(corB, novaCorB, 31);
             }
 
