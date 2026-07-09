@@ -5,8 +5,6 @@
 #ifndef ARESTA_H
 #define ARESTA_H
 
-#include "../include/vertice.h"
-
 /*
  Módulo encarregado de coordenar uma aresta com operações de criar, get, set e eliminar
  */

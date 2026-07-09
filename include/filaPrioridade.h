@@ -58,7 +58,7 @@ bool filaPrioridadeVazia(FilaPrioridade f);
 /// @warning
 int tamanhoFilaPrioridade(FilaPrioridade f);
 
-/// @brief Libera a memória da fila de prioridade, de todos os seus elementos (nós) e !!de todos os Pacotes nela contidos.
+/// @brief Libera a memória da fila de prioridade e de todos os seus elementos (nós).
 /// @param f Ponteiro para a fila de prioridade que será liberada.
 /// @warning
 void liberarFilaPrioridade(FilaPrioridade f);

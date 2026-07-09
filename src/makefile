@@ -42,15 +42,15 @@ MODULOS = \
 	componentes           \
 	dijkstra              \
 	filaPrioridade        \
+	geo                   \
 	grafo                 \
 	lista                 \
+	qry					  \
 	quadra                \
 	registrador           \
 	svg                   \
 	vertice               \
-	geo                   \
-	via                   \
-	qry
+	via
 
 # Objetos dos módulos (gerados em src/)
 MOD_OBJS = $(addprefix $(SRC_DIR)/, $(addsuffix .o, $(MODULOS)))

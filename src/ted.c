@@ -147,7 +147,6 @@ int main(int argc, char* argv[]) {
         gerarMapaBase(svgFinal, quadras, g);
         printf("DEBUB: passou svgFinal\n");
 
-
         Arquivo txt = fopen(caminhoSaidaTxt,"w");
         if (txt == NULL) {
             printf("Erro ao abrir o arquivo txt!\n");
