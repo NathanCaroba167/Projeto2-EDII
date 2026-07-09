@@ -25,14 +25,39 @@ static Arquivo abrirVia(Nome arquivoVia) {
 }
 
 Grafo lerVia(Nome caminho) {
+    printf("DEBUG: Abrindo arquivo: %s\n", caminho);
     Arquivo arquivoVia = abrirVia(caminho);
-    Grafo g = criarGrafo();
 
     char buffer[TAMANHO_MAX_BUFFER];
+    bool primeiraLinha = true;
+    Grafo g = NULL;
+    int indiceVerticaAtual = 0;
+
     while(fgets(buffer,sizeof(buffer),arquivoVia) != NULL) {
         // Remove quebras de linha e trata linhas vazias
         if (buffer[0] == '\n' || buffer[0] == '\r') {
             continue;
+        }
+
+        if (primeiraLinha) {
+            primeiraLinha = false;
+            char copia[TAMANHO_MAX_BUFFER];
+            strcpy(copia, buffer);
+            char* token = strtok(copia," \r\n");
+
+            bool ehNumero = true;
+            for (int i = 0; token != NULL && token[i] != '\0'; i++) {
+                if (token[i] < '0' || token[i] > '9') {
+                    ehNumero = false;
+                }
+            }
+            if (ehNumero && token != NULL) {
+                int qtdVertices = atoi(token);
+                g = criarGrafo(qtdVertices);
+                continue;
+            } else {
+                g = criarGrafo(0);
+            }
         }
 
         char* comando = strtok(buffer," ");
@@ -45,7 +70,7 @@ Grafo lerVia(Nome caminho) {
             double x = atof(strtok(NULL," "));
             double y = atof(strtok(NULL," "));
 
-            inserirVerticeGrafo(g, criarVertice(id, x, y));
+            inserirVerticeGrafo(g, criarVertice(id, x, y, indiceVerticaAtual++));
 
         }else if (strcmp(comando, "e") == 0) {
             char* V1 = strtok(NULL," ");
