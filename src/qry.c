@@ -249,46 +249,46 @@ void lerComandosExecutar(Arquivo svg, Arquivo txt, Nome caminho, Grafo g, Lista 
 
         fprintf(txt,"\n[*] %s\n", buffer);
 
-        char* comando = strtok(buffer," ");
+        char* comando = strtok(buffer," \t\r\n");
         if (comando == NULL) {
             continue;
         }
 
         if (strcmp(comando, "@o?") == 0) {
-            char* reg = strtok(NULL," ");
-            char* cep = strtok(NULL," ");
-            char face = strtok(NULL," ")[0];
-            double num = atof(strtok(NULL," "));
+            char* reg = strtok(NULL," \t\r\n");
+            char* cep = strtok(NULL," \t\r\n");
+            char face = strtok(NULL," \t\r\n")[0];
+            double num = atof(strtok(NULL," \t\r\n"));
 
 
             comandoArrobaOInterrogacao(svg, txt, reg, cep, face, num, estoque, quadras);
 
         }else if (strcmp(comando, "mvm") == 0) {
-            double v = atof(strtok(NULL," "));
-            double rx = atof(strtok(NULL," "));
-            double ry = atof(strtok(NULL," "));
-            double rw = atof(strtok(NULL," "));
-            double rh = atof(strtok(NULL," "));
+            double v = atof(strtok(NULL," \t\r\n"));
+            double rx = atof(strtok(NULL," \t\r\n"));
+            double ry = atof(strtok(NULL," \t\r\n"));
+            double rw = atof(strtok(NULL," \t\r\n"));
+            double rh = atof(strtok(NULL," \t\r\n"));
 
 
             comandoMvm(g, v, rx, ry, rw, rh);
 
         }else if (strcmp(comando, "regs") == 0) {
-            double vl = atof(strtok(NULL," "));
+            double vl = atof(strtok(NULL," \t\r\n"));
 
             comandoRegs(svg, txt, g, vl);
 
         }else if (strcmp(comando, "exp") == 0) {
-            double vl = atof(strtok(NULL," "));
+            double vl = atof(strtok(NULL," \t\r\n"));
 
 
             comandoExp(svg, g, vl);
 
         }else if (strcmp(comando, "p?") == 0) {
-            char* reg1 = strtok(NULL," ");
-            char* reg2 = strtok(NULL," ");
-            char* cc = strtok(NULL," ");
-            char* cr = strtok(NULL," ");
+            char* reg1 = strtok(NULL," \t\r\n");
+            char* reg2 = strtok(NULL," \t\r\n");
+            char* cc = strtok(NULL," \t\r\n");
+            char* cr = strtok(NULL," \t\r\n");
 
             if (!registradorOcupado(estoque, reg1) || !registradorOcupado(estoque, reg2)) {
                 fprintf(txt, "p? %s %s -> registrador nao ocupado\n", reg1, reg2);

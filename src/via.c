@@ -43,7 +43,7 @@ Grafo lerVia(Nome caminho) {
             primeiraLinha = false;
             char copia[TAMANHO_MAX_BUFFER];
             strcpy(copia, buffer);
-            char* token = strtok(copia," \r\n");
+            char* token = strtok(copia," \t\r\n");
 
             bool ehNumero = true;
             for (int i = 0; token != NULL && token[i] != '\0'; i++) {
@@ -60,26 +60,26 @@ Grafo lerVia(Nome caminho) {
             }
         }
 
-        char* comando = strtok(buffer," ");
+        char* comando = strtok(buffer," \t\r\n");
         if (comando == NULL) {
             continue;
         }
 
         if (strcmp(comando, "v") == 0) {
-            char* id = strtok(NULL," ");
-            double x = atof(strtok(NULL," "));
-            double y = atof(strtok(NULL," "));
+            char* id = strtok(NULL," \t\r\n");
+            double x = atof(strtok(NULL," \t\r\n"));
+            double y = atof(strtok(NULL," \t\r\n"));
 
             inserirVerticeGrafo(g, criarVertice(id, x, y, indiceVerticaAtual++));
 
         }else if (strcmp(comando, "e") == 0) {
-            char* V1 = strtok(NULL," ");
-            char* V2 = strtok(NULL," ");
-            char* ldir = strtok(NULL," ");
-            char* lesq = strtok(NULL," ");
-            double cmp = atof(strtok(NULL," "));
-            double vm = atof(strtok(NULL," "));
-            char* nome = strtok(NULL," ");
+            char* V1 = strtok(NULL," \t\r\n");
+            char* V2 = strtok(NULL," \t\r\n");
+            char* ldir = strtok(NULL," \t\r\n");
+            char* lesq = strtok(NULL," \t\r\n");
+            double cmp = atof(strtok(NULL," \t\r\n"));
+            double vm = atof(strtok(NULL," \t\r\n"));
+            char* nome = strtok(NULL," \t\r\n");
 
             char* ldirFinal = (ldir && strcmp(ldir, "-") != 0) ? ldir : NULL;
             char* lesqFinal = (lesq && strcmp(lesq, "-") != 0) ? lesq : NULL;

@@ -40,17 +40,17 @@ Lista lerGeo(Nome caminho) {
             continue;
         }
 
-        char* comando = strtok(buffer," ");
+        char* comando = strtok(buffer," \t\r\n");
         if (comando == NULL) {
             continue;
         }
 
         if (strcmp(comando, "q") == 0) {
-            char* cep = strtok(NULL," ");
-            double x = atof(strtok(NULL," "));
-            double y = atof(strtok(NULL," "));
-            double w = atof(strtok(NULL," "));
-            double h = atof(strtok(NULL," "));
+            char* cep = strtok(NULL," \t\r\n");
+            double x = atof(strtok(NULL," \t\r\n"));
+            double y = atof(strtok(NULL," \t\r\n"));
+            double w = atof(strtok(NULL," \t\r\n"));
+            double h = atof(strtok(NULL," \t\r\n"));
 
             Quadra q = criarQuadra(cep, x, y, w, h);
             setCorPQuadra(q, corP);
@@ -59,9 +59,9 @@ Lista lerGeo(Nome caminho) {
             inserirListaFim(quadras, q);
 
         }else if (strcmp(comando, "cq") == 0) {
-            double novaSW = atof(strtok(NULL," "));
-            char* novaCorP = strtok(NULL," ");
-            char* novaCorB = strtok(NULL," ");
+            double novaSW = atof(strtok(NULL," \t\r\n"));
+            char* novaCorP = strtok(NULL," \t\r\n");
+            char* novaCorB = strtok(NULL," \t\r\n");
 
             sw = novaSW;
             if (novaCorP) {
