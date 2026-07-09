@@ -27,12 +27,21 @@ Arquivo abrirSVG(Nome arquivoSvg) {
 void inicializarSVG(Arquivo svg) {
     if (svg == NULL) return;
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
-    fprintf(svg,"<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" width=\"10000\" height=\"10000\">\n");
+    fprintf(svg,"<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" width=\"10000\" height=\"10000\" viewBox=\"0 0 10000 10000\">\n");
     fprintf(svg,"\t<g>\n");
 }
 
 void desenharQuadraSVG(Arquivo svg, Quadra q) {
     if (svg == NULL || q == NULL) return;
+
+    double x = getXQuadra(q);
+    double y = getYQuadra(q);
+    double w = getWQuadra(q);
+    double h = getHQuadra(q);
+
+    char* corB = getCorBQuadra(q);
+    char* corP = getCorPQuadra(q);
+    double sw = getSWQuadra(q);
 
     fprintf(svg, "\t<rect id=\"%d\" "
                  "x=\"%lf\" "
@@ -45,25 +54,25 @@ void desenharQuadraSVG(Arquivo svg, Quadra q) {
                  "stroke-width=\"%lf\" "
                  "/>\n",
                  idSVG++,
-                 getXQuadra(q),
-                 getYQuadra(q),
-                 getWQuadra(q),
-                 getHQuadra(q),
-                 getCorBQuadra(q),
-                 getCorPQuadra(q),
-                 0.5,
-                 getSWQuadra(q));
+                 x,
+                 y,
+                 w,
+                 h,
+                 corB,
+                 corP,
+                 1.0,
+                 sw);
 
     fprintf(svg, "\t<text id=\"%d\" "
                  "x=\"%lf\" "
                  "y=\"%lf\" "
-                 "font-size=\"10\" "
                  "text-anchor=\"middle\" "
                  "dominant-baseline=\"middle\" "
+                 "font-size=\"10\" "
                  ">%s</text>\n",
                  idSVG++,
-                 (getXQuadra(q) + getWQuadra(q)) / 2.0,
-                 (getYQuadra(q) + getHQuadra(q)) / 2.0,
+                 x + w / 2.0,
+                 y + h / 2.0,
                  getCEPQuadra(q));
 }
 
