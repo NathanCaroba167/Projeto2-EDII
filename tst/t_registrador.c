@@ -18,8 +18,18 @@ void teste_criarRegistradores_devemComecarVazios(void) {
     for (int i = 0; i <= 10; i++) {
         char nome[4];
         sprintf(nome, "R%d", i);
-        TEST_ASSERT_NOT_FALSE(registrador);
+        TEST_ASSERT_FALSE(registradorOcupado(estoque, nome));
     }
+
+    liberarRegistradores(estoque);
+}
+
+void teste_setRegistrador_deveOcuparORegistrador(void) {
+    Registradores estoque = criarRegistradores();
+
+    TEST_ASSERT_FALSE(registradorOcupado(estoque, "R0"));
+    setRegistrador(estoque, "R0", 10.0, 20.0);
+    TEST_ASSERT_TRUE(registradorOcupado(estoque, "R0"));
 
     liberarRegistradores(estoque);
 }
@@ -60,6 +70,7 @@ int main() {
     printf("==========================================\n");
 
     RUN_TEST(teste_criarRegistradores_devemComecarVazios);
+    RUN_TEST(teste_setRegistrador_deveOcuparORegistrador);
     RUN_TEST(teste_setRegistrador_deveArmazenarPosicaoCorretamente);
     RUN_TEST(teste_setRegistrador_sobrescritaDeveAtualizarPosicaoRegistrador);
     RUN_TEST(teste_liberarRegistradores_naoDeveCrashar);
