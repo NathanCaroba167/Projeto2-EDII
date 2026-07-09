@@ -37,7 +37,7 @@ static void gerarMapaBase(Arquivo svg, Lista quadras, Grafo g) {
         while (noListaAresta != NULL) {
             Aresta a = (Aresta) getItemNoLista(noListaAresta);
             Vertice destino = buscaVertice(g, getIDVerticeDestinoAresta(a));
-            if (destino != v) {
+            if (destino != NULL) {
                 desenharArestaSVG(svg, x1, y1, getXVertice(destino), getYVertice(destino));
             }
             noListaAresta = getProximoNoLista(noListaAresta);
