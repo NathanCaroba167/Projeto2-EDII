@@ -198,9 +198,9 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
     }else {
         fprintf(txt, "p? %s %s cc -> custo %.2lf m\n", reg1, reg2, getCustoDijkstra(rdCurto));
 
-        desenharPercursoSVG(svg, g, getXVertice(vOrigem), getYVertice(vOrigem), getCaminhoDijkstra(rdCurto), cc, idPercurso++);
-        desenharMarcadorSVG(svg, getXVertice(vOrigem), getYVertice(vOrigem), 'I', cc);
-        desenharMarcadorSVG(svg, getXVertice(vDestino), getYVertice(vDestino), 'F', cc);
+        desenharPercursoSVG(svg, g, xOrigem, yOrigem, getCaminhoDijkstra(rdCurto), cc, idPercurso++);
+        desenharMarcadorSVG(svg,xOrigem, yOrigem, 'I', cc);
+        desenharMarcadorSVG(svg, xDestino, yDestino, 'F', cc);
     }
 
     liberarResultadoDijkstra(rdCurto);
@@ -212,9 +212,9 @@ static void comandoPInterrogacao(Arquivo svg, Arquivo txt, Grafo g, char* reg1, 
     }else {
         fprintf(txt, "p? %s %s cr -> custo %.2lf s\n", reg1, reg2, getCustoDijkstra(rdRapido));
 
-        desenharPercursoSVG(svg, g, getXVertice(vOrigem), getYVertice(vOrigem), getCaminhoDijkstra(rdRapido), cr, idPercurso++);
-        desenharMarcadorSVG(svg, getXVertice(vOrigem), getYVertice(vOrigem), 'I', cr);
-        desenharMarcadorSVG(svg, getXVertice(vDestino), getYVertice(vDestino), 'F', cr);
+        desenharPercursoSVG(svg, g, xOrigem, yOrigem, getCaminhoDijkstra(rdRapido), cr, idPercurso++);
+        desenharMarcadorSVG(svg, xOrigem, yOrigem, 'I', cr);
+        desenharMarcadorSVG(svg, xDestino, yDestino, 'F', cr);
     }
 
     liberarResultadoDijkstra(rdRapido);
