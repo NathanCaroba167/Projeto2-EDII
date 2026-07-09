@@ -156,7 +156,7 @@ int getNumArestasArvoreGeradoraMinima(ResultadoArvoreGeradoraMinima resultado) {
 void liberarResultadoArvoreGeradoraMinima(ResultadoArvoreGeradoraMinima resultado) {
     resultadoArvoreGeradoraMinima* r = (resultadoArvoreGeradoraMinima*)resultado;
 
-    free(r->arestas);
+    liberarLista(r->arestas);
     free(r);
 }
 
