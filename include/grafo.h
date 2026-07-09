@@ -20,9 +20,10 @@
 typedef void* Grafo;
 
 /// @brief Cria um grafo direcionado vazio.
+/// @param numVerticesEsperados Numero de Vertices Esperados lido na primeira linha do (.via)
 /// @return Ponteiro para o grafo criado.
 /// @warning
-Grafo criarGrafo();
+Grafo criarGrafo(int numVerticesEsperados);
 
 /// @brief Insere um vértice no grafo
 /// @param g Ponteiro para o grafo onde o vértice será inserido

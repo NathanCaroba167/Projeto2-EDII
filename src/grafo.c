@@ -8,25 +8,112 @@
 
 #include "../include/grafo.h"
 
-typedef struct {
-    Lista vertices; //Pode ser um hash
-    int numArestas;
-}grafo;
+#define HASH_CAPACIDADE 1009
 
-static Vertice buscaVerticePeloID(grafo* g, char* id) {
-    Nopont noLista = getPrimeiroNoLista(g->vertices);
-    while (noLista != NULL) {
-        Vertice v = (Vertice) getItemNoLista(noLista);
-        if (strcmp(getIDVertice(v), id) == 0) {
-            return v;
-        }
-        noLista = getProximoNoLista(noLista);
+typedef struct EntradaHash {
+    char* chave;
+    Vertice valor;
+    struct EntradaHash* proxima;
+}EntradaHash;
+
+typedef struct {
+    EntradaHash** buckets;
+    int capacidade;
+    int tamanho;
+}tabelaHash;
+
+static unsigned int calcularHash(const char* chave, int capacidade) {
+    unsigned int h = 2166136261u;
+    while (*chave) {
+        h ^=(unsigned char)(*chave++);
+        h *= 16777619u;
+    }
+    return h % (unsigned int) capacidade;
+}
+
+static tabelaHash* criarTabelaHash(int capacidade) {
+    tabelaHash* t = (tabelaHash*) malloc (sizeof(tabelaHash));
+    if (t == NULL) {
+        printf("Erro ao alocar memória ao criarTabelaHash!\n");
+
+        perror("Motivo do erro");
+        exit(1);
     }
 
+    t->buckets = (EntradaHash**) calloc (capacidade, sizeof(EntradaHash*));
+    if (t->buckets == NULL) {
+        printf("Erro ao alocar memória ao criarTabelaHash!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+
+    t->capacidade = capacidade;
+    t->tamanho = 0;
+
+    return t;
+}
+
+static void inserirTabelaHash(tabelaHash* t, char* chave, Vertice v) {
+    unsigned int indice = calcularHash(chave, t->capacidade);
+
+    EntradaHash* nova = (EntradaHash*) malloc(sizeof(EntradaHash));
+    if (nova == NULL) {
+        printf("Erro ao alocar memória ao inserirTabelaHash!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+
+    nova->chave = (char*) malloc(strlen(chave) + 1);
+    if (nova->chave == NULL) {
+        printf("Erro ao alocar memória da chave ao inserirTabelaHash!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+
+    strcpy(nova->chave, chave);
+    nova->valor = v;
+    nova->proxima = t->buckets[indice];
+    t->buckets[indice] = nova;
+    t->tamanho++;
+}
+
+static Vertice buscarTabelaHash(tabelaHash* t, char* chave) {
+    unsigned int indice = calcularHash(chave, t->capacidade);
+    EntradaHash* entrada = t->buckets[indice];
+
+    while (entrada != NULL) {
+        if (strcmp(entrada->chave, chave) == 0) {
+            return entrada->valor;
+        }
+        entrada = entrada->proxima;
+    }
     return NULL;
 }
 
-Grafo criarGrafo() {
+static void liberarTabelaHash(tabelaHash* t) {
+    for (int i = 0; i < t->capacidade; i++) {
+        EntradaHash* entrada = t->buckets[i];
+        while (entrada != NULL) {
+            EntradaHash* proxima = entrada->proxima;
+            free(entrada->chave);
+            free(entrada);
+            entrada = proxima;
+        }
+    }
+    free(t->buckets);
+    free(t);
+}
+
+typedef struct {
+    Lista vertices;
+    tabelaHash* hash;
+    int numArestas;
+}grafo;
+
+Grafo criarGrafo(int numVerticesEsperados) {
     grafo* g = (grafo*)malloc(sizeof(grafo));
     if(g == NULL){
         printf("Erro ao alocar memória ao criarGrafo!\n");
@@ -35,6 +122,12 @@ Grafo criarGrafo() {
         exit(1);
     }
     g->vertices = iniciarLista();
+
+    int capacidadeHash = numVerticesEsperados > 0 ? (int)(numVerticesEsperados * 1.5) : HASH_CAPACIDADE;
+    if (capacidadeHash % 2 == 0) {
+        capacidadeHash++;
+    }
+    g->hash = criarTabelaHash(capacidadeHash);
     g->numArestas = 0;
     return g;
 }
@@ -42,13 +135,14 @@ Grafo criarGrafo() {
 void inserirVerticeGrafo(Grafo g, Vertice v) {
     grafo* gf = (grafo*)g;
     inserirListaFim(gf->vertices, v);
+    inserirTabelaHash(gf->hash, getIDVertice(v), v);
 }
 
 bool inserirArestaGrafo(Grafo g, char* IDOrigem, char* IDDestino, char* ldir, char* lesq, double cmp, double vm, char* nome) {
     grafo* gf = (grafo*)g;
 
-    Vertice origem = buscaVerticePeloID(gf, IDOrigem);
-    Vertice destino = buscaVerticePeloID(gf, IDDestino);
+    Vertice origem = buscarTabelaHash(gf->hash, IDOrigem);
+    Vertice destino = buscarTabelaHash(gf->hash, IDDestino);
 
     if (origem == NULL || destino == NULL) {
         return false;
@@ -64,7 +158,7 @@ bool inserirArestaGrafo(Grafo g, char* IDOrigem, char* IDDestino, char* ldir, ch
 Vertice buscaVertice(Grafo g, char* id) {
     grafo* gf = (grafo*)g;
 
-    return buscaVerticePeloID(gf, id);
+    return buscarTabelaHash(gf->hash, id);
 }
 
 Lista getVerticesGrafo(Grafo g) {
@@ -90,5 +184,7 @@ void liberarGrafo(Grafo g) {
         noLista = getProximoNoLista(noLista);
     }
     liberarLista(gf->vertices);
+
+    liberarTabelaHash(gf->hash);
     free(gf);
 }
